@@ -386,9 +386,9 @@ const stages = [
           <p>
             The metrics processing stage is currently not supported for
             graphical editing. If this feature is important to you, please open
-            an issue in the{" "}
+            an issue in the
             <a
-              href="https://github.com/grafana/agent-configurator"
+              href="https://github.com/grafana/alloy-configurator"
               target="_blank"
               rel="noreferrer"
             >

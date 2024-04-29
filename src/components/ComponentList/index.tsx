@@ -264,7 +264,7 @@ const ComponentList = ({ addComponent }: ComponentListProps) => {
                 </Button>
                 <LinkButton
                   variant="secondary"
-                  href={`https://grafana.com/docs/agent/latest/flow/reference/components/${c.name}/`}
+                  href={`https://grafana.com/docs/alloy/latest/reference/components/${c.name}/`}
                   target="_blank"
                 >
                   Documentation

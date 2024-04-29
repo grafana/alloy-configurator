@@ -81,7 +81,7 @@ const Component = ({
       {watchAuthType === "in_cluster" && (
         <Alert
           severity="info"
-          title="No further configuration is neccesarry when running the agent in a
+          title="No further configuration is neccesarry when running alloy in a
             Kubernetes environment with the correct service account"
         />
       )}
@@ -212,7 +212,7 @@ const AuthenticationEditor = {
   Component,
   preTransform(
     data: Record<string, any>,
-    def: AuthenticationType = "none"
+    def: AuthenticationType = "none",
   ): Record<string, any> {
     data["auth_type"] = def;
     if (data.bearer_token || data.bearer_token_file)
@@ -242,7 +242,7 @@ const AuthenticationEditor = {
       case "oauth2":
         data.oauth2.scopes = data.oauth2.scopes.map(
           (x: string | SelectableValue<string>) =>
-            typeof x === "object" ? x.value : x
+            typeof x === "object" ? x.value : x,
         );
 
         delete data["bearer_token"];

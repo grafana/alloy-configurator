@@ -1,10 +1,10 @@
-module github.com/grafana/agent-configurator/backend
+module github.com/grafana/alloy-configurator/backend
 
 go 1.21.0
 
 toolchain go1.21.3
 
-require github.com/grafana/agent v0.39.1
+require github.com/grafana/alloy v0.39.1
 
 require (
 	cloud.google.com/go/pubsub v1.33.0 // indirect

@@ -2,22 +2,23 @@ import { Attribute, Block } from "../../lib/river";
 
 function promScrapePushExample(collector: Block): string {
   return (
-    `module.git "grafana_cloud" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  path = "modules/grafana-cloud/autoconfigure/module.river"
+    `import.git "grafana_cloud" {
+  repository = "https://github.com/grafana/alloy-modules.git"
   revision = "main"
-  pull_frequency = "0s"
-  arguments {
-    stack_name = "stackname" // Replace this with your stack name
-    token = env("GRAFANA_CLOUD_TOKEN") 
-  }
+  path = "modules/cloud/grafana/cloud/module.alloy"
+  pull_frequency = "24h"
+}
+
+grafana_cloud.stack "receivers" {
+  stack_name = "mystack" // Replace this with your stack name
+  token = env("GRAFANA_CLOUD_TOKEN")
 }
 
 prometheus.scrape "default" {
   targets = ${collector.name}.${collector.label ? collector.label + "." : ""
     }targets
   forward_to = [
-    module.git.grafana_cloud.exports.metrics_receiver,
+    grafana_cloud.stack.receivers.metrics
   ]
 }
 ` +
@@ -54,41 +55,36 @@ const Examples: Array<{ name: string; source: string; logo: string }> = [
   },
   {
     name: "OpenTelemetry to Grafana Cloud",
-    source: `module.git "grafana_cloud" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  path = "modules/grafana-cloud/autoconfigure/module.river"
+    source: `import.git "grafana_cloud" {
+  repository = "https://github.com/grafana/alloy-modules.git"
   revision = "main"
-  pull_frequency = "0s"
-  arguments {
-    stack_name = "stackname" // Replace this with your stack name
-    token = env("GRAFANA_CLOUD_TOKEN")
-  }
+  path = "modules/cloud/grafana/cloud/module.alloy"
+  pull_frequency = "24h"
+}
+
+grafana_cloud.stack "receivers" {
+  stack_name = "stackName" // replace this with your stack name
+  token = env("GRAFANA_CLOUD_TOKEN")
 }
 otelcol.exporter.prometheus "to_prometheus" {
   forward_to = [
-    module.git.grafana_cloud.exports.metrics_receiver,
+    grafana_cloud.stack.receivers.metrics,
   ]
 }
+
 otelcol.exporter.loki "to_loki" {
   forward_to = [
-    module.git.grafana_cloud.exports.logs_receiver,
+    grafana_cloud.stacks.receivers.logs,
   ]
 }
+
 otelcol.receiver.otlp "default" {
-  grpc {
-  }
-  http {
-  }
+  grpc {}
+  http {}
   output {
-    metrics = [
-      otelcol.exporter.prometheus.to_prometheus.input,
-    ]
-    logs = [
-      otelcol.exporter.loki.to_loki.input,
-    ]
-    traces = [
-      module.git.grafana_cloud.exports.traces_receiver,
-    ]
+    metrics = [otelcol.exporter.prometheus.to_prometheus.input]
+    logs = [otelcol.exporter.loki.to_loki.input]
+    traces = [grafana_cloud.stack.receivers.traces]
   }
 }
 `,
@@ -96,21 +92,21 @@ otelcol.receiver.otlp "default" {
   },
   {
     name: "Monitor a Linux Host",
-    source: `module.git "grafana_cloud" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  path = "modules/grafana-cloud/autoconfigure/module.river"
+    source: `import.git "grafana_cloud" {
+  repository = "https://github.com/grafana/alloy-modules.git"
   revision = "main"
-  pull_frequency = "0s"
-  arguments {
-    stack_name = "stackname" // Replace this with your stack name
-    token = env("GRAFANA_CLOUD_TOKEN")
-  }
+  path = "modules/cloud/grafana/cloud/module.alloy"
+  pull_frequency = "24h"
 }
 
-prometheus.scrape "default" {
+grafana_cloud.stack "receivers" {
+  stack_name = "stackName"
+  token = env("GRAFANA_CLOUD_TOKEN")
+}
+prometheus.scrape "linux_node" {
   targets = prometheus.exporter.unix.node.targets
   forward_to = [
-    module.git.grafana_cloud.exports.metrics_receiver,
+    grafana_cloud.stack.receivers.metrics,
   ]
 }
 
@@ -144,14 +140,13 @@ loki.relabel "journal" {
 
 loki.source.journal "read" {
   forward_to = [
-    module.git.grafana_cloud.exports.logs_receiver,
+    grafana_cloud.stack.receivers.logs,
   ]
   relabel_rules = loki.relabel.journal.rules
   labels = {
     "job" = "integrations/node_exporter",
   }
-}
-`,
+}`,
     logo: "https://storage.googleapis.com/grafanalabs-integration-logos/linux.png",
   },
 ];

@@ -2,30 +2,31 @@ export const CloudDestination = (stackName?: string) => {
   return {
     metrics: {
       enabled: true,
-      receiver: "module.git.grafana_cloud.exports.metrics_receiver",
+      receiver: "grafana_cloud.stack.receivers.metrics",
     },
     logs: {
       enabled: true,
-      receiver: "module.git.grafana_cloud.exports.logs_receiver",
+      receiver: "grafana_cloud.stack.receivers.logs",
     },
     traces: {
       enabled: true,
-      receiver: "module.git.grafana_cloud.exports.traces_receiver",
+      receiver: "grafana_cloud.stack.receivers.traces",
     },
     profiles: {
       enabled: true,
-      receiver: "module.git.grafana_cloud.exports.profiles_receiver",
+      receiver: "grafana_cloud.stack.receivers.profiles",
     },
     template(): string {
-      return `module.git "grafana_cloud" {
-  repository = "https://github.com/grafana/agent-modules.git"
-  path = "modules/grafana-cloud/autoconfigure/module.river"
+      return `import.git "grafana_cloud" {
+  repository = "https://github.com/grafana/alloy-modules.git"
   revision = "main"
-  pull_frequency = "0s"
-  arguments {
-    stack_name = "${!!stackName ? stackName : "stackName"}"
-    token = env("GRAFANA_CLOUD_TOKEN")
-  }
+  path = "modules/cloud/grafana/cloud/module.alloy"
+  pull_frequency = "24h"
+}
+
+grafana_cloud.stack "receivers" {
+  stack_name = "${!!stackName ? stackName : "stackName"}"
+  token = env("GRAFANA_CLOUD_TOKEN")
 }
 `;
     },

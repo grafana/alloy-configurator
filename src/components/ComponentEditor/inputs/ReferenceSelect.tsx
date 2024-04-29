@@ -14,7 +14,7 @@ const ReferenceSelect = ({
   defaultValue,
   rules,
 }: ReferenceSelectProps<{ "-reference": string }>) => {
-  const { components } = useComponentContext();
+  const { components, imports } = useComponentContext();
   defaultValue = defaultValue ?? get(control.defaultValuesRef.current, name);
   const [value, setValue] = useState<SelectableValue<object>>(() => {
     if (!defaultValue) return null;
@@ -22,6 +22,7 @@ const ReferenceSelect = ({
   });
   const targetComponents = toOptions(
     components.map((x) => x.block),
+    imports,
     exportName,
   );
   return (

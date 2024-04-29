@@ -14,7 +14,7 @@ const InstallationInstructions = () => {
     const el = document.createElement("a");
     el.setAttribute(
       "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(model)
+      "data:text/plain;charset=utf-8," + encodeURIComponent(model),
     );
     el.setAttribute("download", "config.river");
     el.style.display = "none";
@@ -89,11 +89,11 @@ const InstallationInstructions = () => {
           </p>
         </li>
         <li>
-          <h5>(Re-)Start the agent</h5>
+          <h5>(Re-)Start Alloy</h5>
           <p>
             Instructions for your system can be found in{" "}
             <a
-              href="https://grafana.com/docs/agent/latest/flow/setup/start-agent/"
+              href="https://grafana.com/docs/alloy/latest/flow/setup/start-agent/"
               rel="noreferrer"
               target="_blank"
             >
