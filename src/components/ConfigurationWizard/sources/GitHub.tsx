@@ -29,7 +29,7 @@ const GitHub = {
       args.push(new Attribute("api_token", advanced.github.api_key));
     return (
       `prometheus.scrape "github" {
-  targets = prometheus.exporter.github.targets
+  targets = prometheus.exporter.github.default.targets
   forward_to = [
     ${d.metrics.receiver},
   ]
