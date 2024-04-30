@@ -18,7 +18,7 @@ prometheus.scrape "default" {
   targets = ${collector.name}.${collector.label ? collector.label + "." : ""
     }targets
   forward_to = [
-    grafana_cloud.stack.receivers.metrics
+    grafana_cloud.stack.receivers.metrics,
   ]
 }
 ` +
