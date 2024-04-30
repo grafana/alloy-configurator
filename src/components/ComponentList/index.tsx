@@ -13,6 +13,7 @@ import { faro } from "@grafana/faro-web-sdk";
 
 interface ComponentListProps {
   addComponent: (component: Block) => void;
+  addImport: (component: Block) => void;
 }
 
 type ListEntry = {
@@ -21,23 +22,32 @@ type ListEntry = {
   meta: Array<string>;
   icon: IconName | `${string}.svg` | `${string}.png`;
   component: Block;
+  import?: Block;
+  docsUrl?: string;
 };
 
 const components: ListEntry[] = [
   {
-    name: "module.git",
+    name: "grafana_cloud.stack",
     title: "Grafana Cloud Autoconfigure",
     meta: ["cloud", "metrics", "logs", "traces", "profiles"],
     icon: "grafana",
-    component: new Block("module.git", "grafana_cloud", [
+    component: new Block("grafana_cloud.stack", "default", [
+      new Attribute("token", {
+        "-function": { name: "env", params: ["GRAFANA_CLOUD_TOKEN"] },
+      }),
+    ]),
+    import: new Block("import.git", "grafana_cloud", [
       new Attribute(
         "repository",
-        "https://github.com/grafana/agent-modules.git",
+        "https://github.com/grafana/alloy-modules.git",
       ),
-      new Attribute("pull_frequency", "0s"),
-      new Attribute("path", "modules/grafana-cloud/autoconfigure/module.river"),
+      new Attribute("path", "modules/cloud/grafana/cloud/module.alloy"),
       new Attribute("revision", "main"),
+      new Attribute("pull_frequency", "24h"),
     ]),
+    docsUrl:
+      "https://github.com/grafana/alloy-modules/tree/main/modules/cloud/grafana/cloud",
   },
   {
     name: "prometheus.remote_write",
@@ -217,7 +227,7 @@ const components: ListEntry[] = [
   },
 ];
 
-const ComponentList = ({ addComponent }: ComponentListProps) => {
+const ComponentList = ({ addComponent, addImport }: ComponentListProps) => {
   const [filter, setFilter] = useState("");
   const filtered = useMemo(() => {
     if (filter === "") return components;
@@ -254,6 +264,9 @@ const ComponentList = ({ addComponent }: ComponentListProps) => {
               <Card.Actions>
                 <Button
                   onClick={() => {
+                    if (c.import) {
+                      addImport(c.import);
+                    }
                     addComponent(c.component);
                     faro.api?.pushEvent("added_component", {
                       component: c.name,
@@ -264,7 +277,10 @@ const ComponentList = ({ addComponent }: ComponentListProps) => {
                 </Button>
                 <LinkButton
                   variant="secondary"
-                  href={`https://grafana.com/docs/alloy/latest/reference/components/${c.name}/`}
+                  href={
+                    c.docsUrl ??
+                    `https://grafana.com/docs/alloy/latest/reference/components/${c.name}/`
+                  }
                   target="_blank"
                 >
                   Documentation

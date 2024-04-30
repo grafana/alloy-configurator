@@ -265,6 +265,20 @@ const ConfigEditor = () => {
       node: null,
     });
   };
+  const insertImport = (component: River.Block) => {
+    const editor = editorRef.current!;
+    editor.executeEdits("configuration-editor", [
+      {
+        range: {
+          startLineNumber: 0,
+          endLineNumber: 0,
+          startColumn: 0,
+          endColumn: 0,
+        },
+        text: component.marshal() + "\n\n",
+      },
+    ]);
+  };
 
   const updateComponent = (component: River.Block) => {
     const editor = editorRef.current!;
@@ -369,7 +383,10 @@ const ConfigEditor = () => {
           }
         >
           {!currentComponent && (
-            <ComponentList addComponent={insertComponent} />
+            <ComponentList
+              addComponent={insertComponent}
+              addImport={insertImport}
+            />
           )}
           {currentComponent && (
             <ComponentEditor
