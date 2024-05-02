@@ -67,9 +67,9 @@ function App() {
           <hr />
           <VerticalGroup>
             <p>
-              If this is your first time working with the Alloy, we recommend
-              you use the configuration wizard or get started with an example
-              configuration, based on your usecase.
+              If this is your first time working with Grafana Alloy, we
+              recommend you use the configuration wizard or get started with an
+              example configuration, based on your usecase.
             </p>
             <div className={styles.buttonBar}>
               <Button onClick={openWizard} variant="primary">
