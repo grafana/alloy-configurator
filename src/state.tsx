@@ -73,7 +73,7 @@ const ModelContext = React.createContext<{
 // Model provider
 export const ModelProvider = ({ children }: React.PropsWithChildren) => {
   const urlModel = new URLSearchParams(document.location.search).get("c");
-  const localStorageModel = localStorage.getItem("config.river");
+  const localStorageModel = localStorage.getItem("config.alloy");
   let initialModel = "";
   if (urlModel) initialModel = atob(urlModel);
   else if (localStorageModel) initialModel = localStorageModel;
