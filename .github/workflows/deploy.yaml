@@ -49,10 +49,10 @@ jobs:
       - name: Build and push
         working-directory: backend/alloy/convert-web
         run: |
-          export KO_DOCKER_REPO=ghcr.io/grafana/agent-configurator-backend
+          export KO_DOCKER_REPO=ghcr.io/grafana/alloy-configurator-backend
           ko build --sbom=none --bare --platform linux/arm64,linux/arm/v7,linux/amd64 -t ${{ github.ref_name }} \
-          --image-label org.opencontainers.image.title=agent-configurator-backend \
-          --image-label org.opencontainers.image.description="Backend for the agent-configurator" \
+          --image-label org.opencontainers.image.title=alloy-configurator-backend \
+          --image-label org.opencontainers.image.description="Backend for the alloy-configurator" \
           --image-label org.opencontainers.image.url=${{ github.server_url }}/${{ github.repository }} \
           --image-label org.opencontainers.image.revision=${{ github.sha }} \
           --image-label org.opencontainers.image.version=${{ github.ref_name }} \
