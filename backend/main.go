@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/grafana/alloy/converter"
-	"github.com/grafana/alloy/converter/diag"
+	"github.com/grafana/alloy/internal/converter"
+	"github.com/grafana/alloy/internal/converter/diag"
 	"github.com/rs/cors"
 )
 
