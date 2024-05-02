@@ -1,23 +1,23 @@
-# Agent Configurator Tool
+# Alloy Configurator Tool
 
-The _Agent Configuration Generator_ is an easy to use web interface for creating and editing agent configuration files. It targets the flow configuration format.
+The _Alloy Configuration Generator_ is an easy to use web interface for creating and editing alloy configuration files. It targets the flow configuration format.
 
-Try it out here: [grafana.github.io/agent-configurator/](https://grafana.github.io/agent-configurator/)
+Try it out here: [grafana.github.io/alloy-configurator/](https://grafana.github.io/alloy-configurator/)
 
-**This is an experimental tool and still in its early days!**. While we aim to support all agent components and are commited to adding support for new components, complete support will take some time.
+**This is an experimental tool and still in its early days!**. While we aim to support all alloy components and are commited to adding support for new components, complete support will take some time.
 
 ## Core Features
 
 Features marked as completed are currently present while the rest are still in development.
 
-* [x] Create a fresh agent configuration file using a guided configuration wizard
+* [x] Create a fresh alloy configuration file using a guided configuration wizard
 * [x] Update existing configurations by editing existing components or adding new ones
-* [ ] Have [all components](https://grafana.com/docs/agent/latest/flow/reference/components/) configurable without writing code
+* [ ] Have [all components](https://grafana.com/docs/alloy/latest/reference/components/) configurable without writing code
 * [x] Share configurations as URLs
 
 ## Target Audience
 
-* First time agent users
+* First time alloy users
   * Provide value by allowing _mix and match_ configuration without having to understand the configuration language
 * Advanced users
   * Provide value by improving discoverability of components and configuration options

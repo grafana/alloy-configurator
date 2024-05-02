@@ -44,6 +44,7 @@ const TypedInput = ({
   placeholder,
   defaultValue,
   type,
+  width,
 }: {
   name: string;
   control: Control<Record<string, any>>;
@@ -51,6 +52,7 @@ const TypedInput = ({
   placeholder?: string;
   defaultValue?: Record<string, any> | string;
   type?: "text" | "number";
+  width?: number;
 }) => {
   defaultValue = defaultValue ?? get(control.defaultValuesRef.current, name);
   const [inputType, setInputType] = React.useState<Type>("literal");
@@ -87,6 +89,7 @@ const TypedInput = ({
       render={({ field: { onChange } }) => (
         <Input
           placeholder={placeholder}
+          width={width}
           prefix={
             <Dropdown
               overlay={

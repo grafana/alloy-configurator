@@ -59,16 +59,15 @@ function App() {
       <Header></Header>
       <section className={styles.firstSection}>
         <div className={styles.hero}>
-          <h1>Welcome to the Grafana Agent Configuration Generator</h1>
+          <h1>Welcome to the Grafana Alloy Configuration Generator</h1>
           <p>
-            This tool allows for easy configuration of Grafana Agents{" "}
-            <i>Flow</i> system. To get started click on{" "}
-            <code>Add Component</code> in the editor below
+            This tool allows for easy configuration of Grafana Alloy. To get
+            started click on <code>Add Component</code> in the editor below
           </p>
           <hr />
           <VerticalGroup>
             <p>
-              If this is your first time working with the agent, we recommend
+              If this is your first time working with the Alloy, we recommend
               you use the configuration wizard or get started with an example
               configuration, based on your usecase.
             </p>
@@ -87,11 +86,11 @@ function App() {
               </Button>
               <LinkButton
                 variant="secondary"
-                href="https://grafana.com/docs/agent/latest/flow/"
+                href="https://grafana.com/docs/alloy/latest/"
                 target="_blank"
                 icon="external-link-alt"
               >
-                View Flow Docs
+                View Alloy Docs
               </LinkButton>
               <div
                 className={css`

@@ -11,16 +11,16 @@ const Header = () => {
       <div className={styles.headerContent}>
         <div className={styles.flex}>
           <img
-            src={`${process.env.PUBLIC_URL}/grafana.svg`}
+            src={`${process.env.PUBLIC_URL}/alloy_icon_orange.svg`}
             alt={"Grafana logo"}
             className={styles.logo}
           />
-          <h4 className={styles.headerText}>Agent Configuration Generator</h4>
+          <h4 className={styles.headerText}>Alloy Configuration Generator</h4>
         </div>
         <div className={styles.flex}>
           <a
             className={styles.icon}
-            href={"https://github.com/grafana/agent-configurator"}
+            href={"https://github.com/grafana/alloy-configurator"}
             target={"_blank"}
             rel={"noreferrer noopenner"}
           >
@@ -74,8 +74,8 @@ const getStyles = (theme: GrafanaTheme2) => {
       cursor: pointer;
     `,
     logo: css`
-      width: 20px;
-      height: 20px;
+      width: 35px;
+      height: 35px;
       margin-right: 10px;
     `,
     icon: css`

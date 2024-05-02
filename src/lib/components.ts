@@ -1,6 +1,8 @@
 import Parser from "web-tree-sitter";
 import * as monaco from "monaco-editor";
-import { Block } from "./river";
+import { Attribute, Block } from "./river";
+import { FormAPI } from "@grafana/ui";
+import GrafanaCloudAutoconfigure from "../components/ComponentEditor/components/modules/GrafanaCloudAutoConfigure";
 
 type LiteralType =
   | "string"
@@ -100,6 +102,7 @@ export class ComponentType extends BlockType {
     node: Parser.SyntaxNode,
     block: Block,
   ) => monaco.editor.IMarkerData[];
+  componentForm?: ComponentForm;
   constructor({
     multi = false,
     args = {},
@@ -108,6 +111,7 @@ export class ComponentType extends BlockType {
     ordered = false,
     orderedIn = undefined,
     markersFor = undefined,
+    componentForm = undefined,
   }: {
     multi?: boolean;
     args?: Record<string, ArgumentType>;
@@ -119,10 +123,22 @@ export class ComponentType extends BlockType {
       node: Parser.SyntaxNode,
       block: Block,
     ) => monaco.editor.IMarkerData[];
+    componentForm?: ComponentForm;
   }) {
     super({ multi, args, allowEmpty, exports, ordered, orderedIn });
     this.markersFor = markersFor;
+    this.componentForm = componentForm;
   }
+}
+
+export interface ComponentForm {
+  Component: ({
+    methods,
+  }: {
+    methods: FormAPI<Record<string, any>>;
+  }) => JSX.Element;
+  preTransform: (data: Record<string, any>) => Record<string, any>;
+  postTransform: (data: Record<string, any>) => Record<string, any>;
 }
 
 export interface ArgumentType {
@@ -320,8 +336,19 @@ export const KnownComponents: Record<string, ComponentType> = {
       set_client_name: new LiteralArgument("boolean", true),
     },
   }),
-  "module.git": new ComponentType({
+  "import.git": new ComponentType({
     multi: true,
+    markersFor(node, block) {
+      const repo = block.attributes.find(
+        (x) => x.name === "repository",
+      ) as Attribute | null;
+      const path = block.attributes.find(
+        (x) => x.name === "path",
+      ) as Attribute | null;
+      const f = KnownModules[repo?.value]?.[path?.value]?.importMarkers;
+      if (!f) return [];
+      return f(node, block);
+    },
   }),
   "prometheus.exporter.unix": new ComponentType({
     allowEmpty: true,
@@ -727,45 +754,74 @@ export const KnownComponents: Record<string, ComponentType> = {
   }),
 };
 
-export const KnownModules: Record<string, Record<string, ComponentType>> = {
-  "https://github.com/grafana/agent-modules.git": {
-    "modules/grafana-cloud/autoconfigure/module.river": new ComponentType({
-      exports: {
-        "exports.metrics_receiver": "PrometheusReceiver",
-        "exports.logs_receiver": "LokiReceiver",
-        "exports.traces_receiver": "otel.TracesConsumer",
-        "exports.profiles_receiver": "ProfilesReceiver",
-      },
-      markersFor(node, _block) {
-        const argNodes = node.childForFieldName("body")?.namedChildren;
-        const tokenArg = argNodes
-          ?.find((n) => n.text.trim().startsWith("arguments"))
-          ?.lastChild?.children.find((n) => n.text.trim().startsWith("token"));
-        if (tokenArg) {
-          return [
-            {
-              message:
-                "Make sure the token you use has the stacks:read permission",
-              severity: monaco.MarkerSeverity.Info,
-              startLineNumber: tokenArg.startPosition.row + 1,
-              startColumn: tokenArg.startPosition.column,
-              endLineNumber: tokenArg.endPosition.row + 1,
-              endColumn: tokenArg.endPosition.column + 1,
-            },
-          ];
-        }
+export const KnownModules: Record<
+  string,
+  Record<
+    string,
+    {
+      exports: Record<string, ComponentType>;
+      importMarkers?: (
+        node: Parser.SyntaxNode,
+        block: Block,
+      ) => monaco.editor.IMarkerData[];
+    }
+  >
+> = {
+  "https://github.com/grafana/alloy-modules.git": {
+    "modules/cloud/grafana/cloud/module.alloy": {
+      importMarkers(node, block) {
         return [
           {
             message:
-              "Make sure the token you use has the stacks:read permission",
-            severity: monaco.MarkerSeverity.Hint,
+              "Currently, the Pyroscope functionality in this module is under the public-preview stability level. As such, to use this module, you will need to pass `--stability.level=public-preview` to your `alloy run` command.",
+            severity: monaco.MarkerSeverity.Warning,
             startLineNumber: node.startPosition.row + 1,
-            startColumn: node.startPosition.column,
+            startColumn: node.startPosition.column + 1,
             endLineNumber: node.endPosition.row + 1,
             endColumn: node.endPosition.column + 1,
           },
         ];
       },
-    }),
+      exports: {
+        stack: new ComponentType({
+          exports: {
+            metrics: "PrometheusReceiver",
+            logs: "LokiReceiver",
+            traces: "otel.TracesConsumer",
+            profiles: "ProfilesReceiver",
+          },
+          multi: true,
+          componentForm: GrafanaCloudAutoconfigure,
+          markersFor(node, _block) {
+            const tokenArg: Parser.SyntaxNode | undefined = node
+              .childForFieldName("body")
+              ?.children?.find((n) => n.text.trim().startsWith("token"));
+            const markers = [];
+            if (tokenArg) {
+              markers.push({
+                message:
+                  "Make sure the token you use has the stacks:read permission",
+                severity: monaco.MarkerSeverity.Info,
+                startLineNumber: tokenArg.startPosition.row + 1,
+                startColumn: tokenArg.startPosition.column + 1,
+                endLineNumber: tokenArg.endPosition.row + 1,
+                endColumn: tokenArg.endPosition.column + 1,
+              });
+            } else {
+              markers.push({
+                message:
+                  "Make sure the token you use has the stacks:read permission",
+                severity: monaco.MarkerSeverity.Info,
+                startLineNumber: node.startPosition.row + 1,
+                startColumn: node.startPosition.column + 1,
+                endLineNumber: node.endPosition.row + 1,
+                endColumn: node.endPosition.column + 1,
+              });
+            }
+            return markers;
+          },
+        }),
+      },
+    },
   },
 };

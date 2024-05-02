@@ -16,7 +16,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           {...commonOptions}
         >
           <TypedInput
-            name="arguments.stack_name"
+            name="stack_name"
             control={methods.control}
             rules={{ required: true }}
           />
@@ -29,7 +29,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           {...commonOptions}
         >
           <TypedInput
-            name="arguments.token"
+            name="token"
             control={methods.control}
             rules={{ required: true }}
           />

@@ -14,9 +14,9 @@ const InstallationInstructions = () => {
     const el = document.createElement("a");
     el.setAttribute(
       "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(model)
+      "data:text/plain;charset=utf-8," + encodeURIComponent(model),
     );
-    el.setAttribute("download", "config.river");
+    el.setAttribute("download", "config.alloy");
     el.style.display = "none";
     document.body.appendChild(el);
     el.click();
@@ -38,7 +38,7 @@ const InstallationInstructions = () => {
           <h5>
             Follow the{" "}
             <a
-              href="https://grafana.com/docs/agent/latest/flow/setup/install/"
+              href="https://grafana.com/docs/alloy/latest/get-started/install/"
               target="_blank"
               rel="noreferrer"
             >
@@ -67,33 +67,44 @@ const InstallationInstructions = () => {
               </Button>
             </Tooltip>
           </HorizontalGroup>
+          <p>The default configuration file for flow mode is located at:</p>
           <p>
-            The default River configuration file for flow mode is located at:
+            <ul>
+              <li>
+                Linux: <code>/etc/alloy/config.alloy</code>
+              </li>
+              <li>
+                macOS: <code>$(brew --prefix)/etc/alloy/config.alloy</code>
+              </li>
+              <li>
+                Windows:{" "}
+                <code>%PROGRAMFILES%\GrafanaLabs\Alloy\config.alloy</code>
+              </li>
+            </ul>
           </p>
-          <ul>
-            <li>
-              Linux: <code>/etc/grafana-agent-flow.river</code>
-            </li>
-            <li>
-              macOS:{" "}
-              <code>$(brew --prefix)/etc/grafana-agent-flow/config.river</code>
-            </li>
-            <li>
-              Windows:{" "}
-              <code>C:\Program Files\Grafana Agent Flow\config.river</code>
-            </li>
-          </ul>
           <p>
             If you are using environment variables in your configuration, make
-            sure these are present as well.
+            sure these are present as well. Depending on the features you use,
+            you might also need to add{" "}
+            <code>--stability.level=public-preview</code> to your{" "}
+            <code>alloy run</code> command. Instructions for accomplishing this
+            can be found in the{" "}
+            <a
+              href="https://grafana.com/docs/alloy/latest/tasks/configure/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              configuration documentation
+            </a>
+            .
           </p>
         </li>
         <li>
-          <h5>(Re-)Start the agent</h5>
+          <h5>(Re-)Start Alloy</h5>
           <p>
             Instructions for your system can be found in{" "}
             <a
-              href="https://grafana.com/docs/agent/latest/flow/setup/start-agent/"
+              href="https://grafana.com/docs/alloy/latest/get-started/run/"
               rel="noreferrer"
               target="_blank"
             >

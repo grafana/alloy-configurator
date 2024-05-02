@@ -7,7 +7,7 @@ import {
   HorizontalGroup,
 } from "@grafana/ui";
 import { faro } from "@grafana/faro-web-sdk";
-import { Attribute, Block, toBlock } from "../../lib/river";
+import { Block, toBlock } from "../../lib/river";
 import PrometheusRemoteWrite from "./components/PrometheusRemoteWrite";
 import PrometheusExporterRedis from "./components/PrometheusExporterRedis";
 import PrometheusScrape from "./components/PrometheusScrape";
@@ -22,7 +22,6 @@ import { css } from "@emotion/css";
 import { GrafanaTheme2 } from "@grafana/data";
 import OTelColProcessorBatch from "./components/OTelColProcessorBatch";
 import OTelColExporterPrometheus from "./components/OTelColExporterPrometheus";
-import GrafanaCloudAutoconfigure from "./components/modules/GrafanaCloudAutoConfigure";
 import OTelColExporterLoki from "./components/OTelColExporterLoki";
 import PrometheusExporterUnix from "./components/PrometheusExporterUnix";
 import LokiSourceFile from "./components/LokiSourceFile";
@@ -37,6 +36,8 @@ import LokiWrite from "./components/LokiWrite";
 import LokiSourceWindowsEvent from "./components/LokiSourceWindowsEvent";
 import PrometheusExporterWindows from "./components/PrometheusExporterWindows";
 import LokiProcess from "./components/LokiProcess";
+import { useComponentContext } from "../../state";
+import ImportGit from "./components/ImportGit";
 
 interface ComponentEditorProps {
   updateComponent: (component: Block) => void;
@@ -49,6 +50,7 @@ const ComponentEditor = ({
   discard,
 }: ComponentEditorProps) => {
   const styles = useStyles(getStyles);
+  const { imports } = useComponentContext();
 
   const {
     Component,
@@ -130,20 +132,13 @@ const ComponentEditor = ({
         return DiscoveryRelabel;
       case "pyroscope.scrape":
         return PyroscopeScrape;
-      //@ts-ignore if no module matches, we fall through to the unsupported component path
-      case "module.git":
-        const repo = component.attributes.find(
-          (x) => x.name === "repository",
-        ) as Attribute | null;
-        const path = component.attributes.find(
-          (x) => x.name === "path",
-        ) as Attribute | null;
-        switch (`${repo?.value};${path?.value}`) {
-          case "https://github.com/grafana/agent-modules.git;modules/grafana-cloud/autoconfigure/module.river":
-            return GrafanaCloudAutoconfigure;
-        }
-      //@ts-ignore if no module matches, we fall through to the unsupported component path
+      case "import.git":
+        return ImportGit;
       default:
+        const moduleEditor = imports[component.name]?.componentForm;
+        if (moduleEditor) {
+          return moduleEditor;
+        }
         faro.api?.pushEvent("edit_unsupported", { component: component.name });
         return {
           Component: UnsupportedComponent,
@@ -153,7 +148,9 @@ const ComponentEditor = ({
     }
   })();
 
-  let spec = KnownComponents[component.name];
+  let spec = KnownComponents[component.name]
+    ? KnownComponents[component.name]
+    : imports[component.name];
   let formValues = component.formValues(spec);
   formValues = preTransform(formValues);
   if (spec && spec.multi) formValues["label"] = component.label;

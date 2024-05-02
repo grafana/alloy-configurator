@@ -1,34 +1,23 @@
 import { SelectableValue } from "@grafana/data";
 import { Control } from "react-hook-form";
-import { Attribute, Block } from "../../../lib/river";
+import { Block } from "../../../lib/river";
 
 import {
-  BlockType,
+  ComponentType,
   ExportType,
   KnownComponents,
-  KnownModules,
 } from "../../../lib/components";
 
 export function toOptions(
   components: Block[],
+  imports: Record<string, ComponentType>,
   exportName: ExportType,
 ): SelectableValue<object>[] {
   const options: SelectableValue<object>[] = [];
   for (const component of components) {
-    let spec: BlockType | null = null;
-    if (component.name.startsWith("module.git")) {
-      const repo = component.attributes.find(
-        (x) => x.name === "repository",
-      ) as Attribute | null;
-      const path = component.attributes.find(
-        (x) => x.name === "path",
-      ) as Attribute | null;
-      if (repo && path && KnownModules[repo.value]) {
-        spec = KnownModules[repo.value][path.value];
-      }
-    } else {
-      spec = KnownComponents[component.name];
-    }
+    const spec = KnownComponents[component.name]
+      ? KnownComponents[component.name]
+      : imports[component.name];
     if (!spec) continue;
     for (const en of Object.keys(spec.exports)) {
       if (spec.exports[en] === exportName) {

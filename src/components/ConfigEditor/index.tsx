@@ -13,6 +13,7 @@ import { useComponentContext, Component, useModelContext } from "../../state";
 import { css } from "@emotion/css";
 import { GrafanaTheme2 } from "@grafana/data";
 import { markersFor } from "../../lib/componentaddons";
+import { ComponentType } from "../../lib/components";
 
 const defaultOpts: monaco.editor.IStandaloneEditorConstructionOptions = {
   fontSize: 15,
@@ -64,9 +65,10 @@ const findErrors = (cursor: Parser.TreeCursor, level = 0) => {
 
 const provideInfoMarkers = (
   components: { node: Parser.SyntaxNode; block: River.Block }[],
+  imports: Record<string, ComponentType>,
 ): monaco.editor.IMarkerData[] => {
   return components.flatMap((c) => {
-    return markersFor(c.node, c.block);
+    return markersFor(c.node, c.block, imports);
   }, []);
 };
 
@@ -112,10 +114,10 @@ const ConfigEditor = () => {
       return { node, block: River.UnmarshalBlock(node) };
     });
     componentsRef.current = components;
-    setComponents(components);
+    const imports = setComponents(components);
 
     const errs = findErrors(cursor);
-    const infos = provideInfoMarkers(components);
+    const infos = provideInfoMarkers(components, imports);
     const mmdl = editorRef.current?.getModel();
     if (mmdl) {
       monacoRef.current?.editor.setModelMarkers(mmdl, "ts", [
@@ -263,6 +265,20 @@ const ConfigEditor = () => {
       node: null,
     });
   };
+  const insertImport = (component: River.Block) => {
+    const editor = editorRef.current!;
+    editor.executeEdits("configuration-editor", [
+      {
+        range: {
+          startLineNumber: 0,
+          endLineNumber: 0,
+          startColumn: 0,
+          endColumn: 0,
+        },
+        text: component.marshal() + "\n\n",
+      },
+    ]);
+  };
 
   const updateComponent = (component: River.Block) => {
     const editor = editorRef.current!;
@@ -355,7 +371,7 @@ const ConfigEditor = () => {
                   />
                 )}
                 <LinkButton
-                  href={`https://grafana.com/docs/agent/latest/flow/reference/components/${currentComponent.component.name}/`}
+                  href={`https://grafana.com/docs/alloy/latest/reference/components/${currentComponent.component.name}/`}
                   icon="external-link-alt"
                   variant="secondary"
                   target="_blank"
@@ -367,7 +383,10 @@ const ConfigEditor = () => {
           }
         >
           {!currentComponent && (
-            <ComponentList addComponent={insertComponent} />
+            <ComponentList
+              addComponent={insertComponent}
+              addImport={insertImport}
+            />
           )}
           {currentComponent && (
             <ComponentEditor
