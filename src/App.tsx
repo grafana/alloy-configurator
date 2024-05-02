@@ -10,7 +10,6 @@ import {
   Icon,
   Tooltip,
   VerticalGroup,
-  Badge,
 } from "@grafana/ui";
 import Header from "./components/Header";
 import ConfigEditor from "./components/ConfigEditor";
@@ -77,7 +76,6 @@ function App() {
               </Button>
               {converterEnabled && (
                 <Button onClick={openConverter} variant="secondary">
-                  <Badge text="New" icon="rocket" color="green" />
                   Convert your existing configuration
                 </Button>
               )}

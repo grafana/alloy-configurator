@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 env:
   REACT_APP_FARO_URL: ${{ secrets.REACT_APP_FARO_URL }}
+  REACT_APP_CONVERT_ENDPOINT: 'https://alloy-configurator-wcwoo.ondigitalocean.app/convert'
 
 permissions:
   contents: read
