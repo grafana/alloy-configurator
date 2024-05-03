@@ -14,7 +14,12 @@ import { useModelContext } from "../../state";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useMemo, useState } from "react";
 
-type InputType = "otelcol" | "promtail" | "static" | "prometheus";
+type InputType =
+  | "otelcol"
+  | "promtail"
+  | "static"
+  | "prometheus"
+  | "static integrations-next";
 
 interface Diagnostic {
   Severity: number;
@@ -115,6 +120,10 @@ const Converter = ({ dismiss }: { dismiss: () => void }) => {
                         {
                           label: "Grafana Agent Static",
                           value: "static",
+                        },
+                        {
+                          label: "Grafana Agent Static Integrations Next",
+                          value: "static integrations-next",
                         },
                         {
                           label: "OpenTelemetry Collector",
