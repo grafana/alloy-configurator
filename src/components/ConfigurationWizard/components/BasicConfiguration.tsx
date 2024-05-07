@@ -5,7 +5,9 @@ import {
   Checkbox,
   Field,
   Input,
+  LinkButton,
   Modal,
+  Toggletip,
   VerticalGroup,
 } from "@grafana/ui";
 import { Controller, FormProvider, useForm } from "react-hook-form";
@@ -90,6 +92,27 @@ const BasicConfiguration = ({
           stepNo={3}
         >
           <SourcesInput />
+          <Toggletip
+            content={
+              <div>
+                We're sorry to hear that. Please{" "}
+                <LinkButton
+                  icon="external-link-alt"
+                  fill="outline"
+                  size="md"
+                  href="https://github.com/grafana/alloy-configurator/issues/new?assignees=&labels=enhancement%2C+wizard&projects=&template=request-wizard-source.md&title="
+                  target="_blank"
+                >
+                  file an issue
+                </LinkButton>{" "}
+                describing which source you would like to see.
+              </div>
+            }
+          >
+            <Button fill="text" icon="question-circle">
+              Missing a source?
+            </Button>
+          </Toggletip>
         </Step>
         <Modal.ButtonRow>
           <Button variant="secondary" fill="outline" onClick={dismiss}>
