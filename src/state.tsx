@@ -75,7 +75,12 @@ export const ModelProvider = ({ children }: React.PropsWithChildren) => {
   const urlModel = new URLSearchParams(document.location.search).get("c");
   const localStorageModel = localStorage.getItem("config.alloy");
   let initialModel = "";
-  if (urlModel) initialModel = atob(urlModel);
+  const base64ToBytes = (data: string) => {
+    const binString = atob(decodeURIComponent(data));
+    return Uint8Array.from(binString, (m) => m.codePointAt(0) ?? 0);
+  };
+  if (urlModel)
+    initialModel = new TextDecoder().decode(base64ToBytes(urlModel));
   else if (localStorageModel) initialModel = localStorageModel;
   if (initialModel === "") {
     initialModel = `// Welcome to the Grafana Alloy Configurator!

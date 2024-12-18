@@ -40,10 +40,16 @@ function App() {
 
   const converterEnabled = !!process.env.REACT_APP_CONVERT_ENDPOINT;
 
-  const shareLink = useMemo(
-    () => `${window.location}?c=${btoa(model)}`,
-    [model],
-  );
+  const bytesToBase64 = (bytes: Uint8Array) => {
+    const binString = Array.from(bytes, (byte) =>
+      String.fromCodePoint(byte),
+    ).join("");
+    return btoa(binString);
+  };
+
+  const shareLink = useMemo(() => {
+    return `${window.location}?c=${encodeURIComponent(bytesToBase64(new TextEncoder().encode(model)))}`;
+  }, [model]);
 
   const copyLink = () => {
     navigator.clipboard.writeText(shareLink);
