@@ -22,7 +22,7 @@ const OTLPReceiver = {
     if (d.logs.enabled) {
       out += `otelcol.exporter.loki "to_loki" {
   forward_to = [
-    grafana_cloud.stacks.receivers.logs,
+    grafana_cloud.stack.receivers.logs,
   ]
 }
 
