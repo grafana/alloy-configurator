@@ -1,5 +1,4 @@
 import {
-  FormAPI,
   HorizontalGroup,
   InlineField,
   Input,
@@ -7,15 +6,17 @@ import {
   VerticalGroup,
 } from "@grafana/ui";
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 import TlsBlock from "../common/TlsBlock";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const methods = useFormContext();
   const [httpEnableTLS, setHttpEnableTLS] = useState(
-    methods.getValues().http?.tls
+    methods.getValues().http?.tls,
   );
   const [grpcEnableTLS, setGrpcEnableTLS] = useState(
-    methods.getValues().grpc?.tls
+    methods.getValues().grpc?.tls,
   );
 
   const watchGrpcEnabled = methods.watch("grpc.enabled");
@@ -126,7 +127,6 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         </VerticalGroup>
         {grpcEnableTLS && (
           <TlsBlock
-            methods={methods}
             variant="server"
             parent="grpc.tls"
             disabled={!watchGrpcEnabled}
@@ -187,7 +187,6 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         </VerticalGroup>
         {httpEnableTLS && (
           <TlsBlock
-            methods={methods}
             variant="server"
             disabled={!watchHttpEnabled}
             parent="http.tls"

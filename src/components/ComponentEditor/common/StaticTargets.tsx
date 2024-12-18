@@ -1,13 +1,7 @@
 import { css } from "@emotion/css";
 import { GrafanaTheme2 } from "@grafana/data";
-import {
-  Button,
-  FieldArray,
-  FieldSet,
-  InlineField,
-  VerticalGroup,
-} from "@grafana/ui";
-import { Control } from "react-hook-form";
+import { Button, FieldSet, InlineField, VerticalGroup } from "@grafana/ui";
+import { Control, useFieldArray } from "react-hook-form";
 import { useStyles } from "../../../theme";
 import LabelsInput from "../inputs/LabelsInput";
 import TypedInput from "../inputs/TypedInput";
@@ -31,55 +25,52 @@ const Component = ({
 }) => {
   const styles = useStyles(getStyles);
   parent = parent ? parent + "." : "";
+  const { fields, append, remove } = useFieldArray({
+    name: `${parent}static_targets` as const,
+  });
   return (
     <FieldSet>
-      <FieldArray control={control} name={`${parent}static_targets` as const}>
-        {({ fields, append, remove }) => (
-          <VerticalGroup>
-            {fields.map((field, index) => (
-              <div key={field.id} className={styles.targetBox}>
-                <VerticalGroup>
-                  <InlineField
-                    label="Address"
-                    tooltip="Hostname/IP Address and port of the target to be scraped"
-                    labelWidth={14}
-                    error="An address must be defined"
-                    invalid={!!errors?.static_targets?.[index]?.address}
-                  >
-                    <TypedInput
-                      name={
-                        `${parent}static_targets[${index}].address` as const
-                      }
-                      control={control}
-                      rules={{ required: true }}
-                      placeholder="localhost:8080"
-                    />
-                  </InlineField>
-                  <LabelsInput
-                    control={control}
-                    name={`${parent}static_targets[${index}].labels`}
-                  />
-                  <Button
-                    fill="outline"
-                    variant="secondary"
-                    icon="trash-alt"
-                    tooltip="Delete this target"
-                    onClick={(e) => {
-                      remove(index);
-                      e.preventDefault();
-                    }}
-                  >
-                    Delete Target
-                  </Button>
-                </VerticalGroup>
-              </div>
-            ))}
-            <Button onClick={() => append({})} icon="plus">
-              Add Target
-            </Button>
-          </VerticalGroup>
-        )}
-      </FieldArray>
+      <VerticalGroup>
+        {fields.map((field, index) => (
+          <div key={field.id} className={styles.targetBox}>
+            <VerticalGroup>
+              <InlineField
+                label="Address"
+                tooltip="Hostname/IP Address and port of the target to be scraped"
+                labelWidth={14}
+                error="An address must be defined"
+                invalid={!!errors?.static_targets?.[index]?.address}
+              >
+                <TypedInput
+                  name={`${parent}static_targets[${index}].address` as const}
+                  control={control}
+                  rules={{ required: true }}
+                  placeholder="localhost:8080"
+                />
+              </InlineField>
+              <LabelsInput
+                control={control}
+                name={`${parent}static_targets[${index}].labels`}
+              />
+              <Button
+                fill="outline"
+                variant="secondary"
+                icon="trash-alt"
+                tooltip="Delete this target"
+                onClick={(e) => {
+                  remove(index);
+                  e.preventDefault();
+                }}
+              >
+                Delete Target
+              </Button>
+            </VerticalGroup>
+          </div>
+        ))}
+        <Button onClick={() => append({})} icon="plus">
+          Add Target
+        </Button>
+      </VerticalGroup>
     </FieldSet>
   );
 };

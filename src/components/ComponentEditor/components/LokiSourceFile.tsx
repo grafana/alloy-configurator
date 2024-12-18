@@ -1,8 +1,13 @@
-import { FormAPI, InlineField } from "@grafana/ui";
+import { InlineField } from "@grafana/ui";
 import ReferenceSelect from "../inputs/ReferenceSelect";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
+import { useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    formState: { errors },
+    control,
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -10,12 +15,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="List of files to read from."
         labelWidth={14}
         error="You must specify the targets parameter"
-        invalid={!!methods.errors["targets"]}
+        invalid={!!errors["targets"]}
       >
         <ReferenceSelect
           name="targets"
           exportName="list(Target)"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -23,12 +28,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="List of receivers to send log entries to."
         labelWidth={14}
         error="You must specify the destination"
-        invalid={!!methods.errors["forward_to"]}
+        invalid={!!errors["forward_to"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="LokiReceiver"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
     </>

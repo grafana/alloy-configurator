@@ -1,16 +1,18 @@
-import { FormAPI, InlineField, VerticalGroup } from "@grafana/ui";
+import { InlineField, VerticalGroup } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 25,
   };
+  const { control } = useFormContext();
   return (
     <>
       <VerticalGroup>
         <InlineField label="Forward to" {...commonOptions}>
           <ReferenceMultiSelect
-            control={methods.control}
+            control={control}
             name="forward_to"
             exportName="LokiReceiver"
           />

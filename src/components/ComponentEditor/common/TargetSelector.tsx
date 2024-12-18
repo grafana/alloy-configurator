@@ -2,24 +2,28 @@ import { css } from "@emotion/css";
 import { GrafanaTheme2 } from "@grafana/data";
 import {
   FieldSet,
-  FormAPI,
   InlineField,
-  InputControl,
   RadioButtonGroup,
   VerticalGroup,
 } from "@grafana/ui";
+import { Controller, useFormContext } from "react-hook-form";
 import { useStyles } from "../../../theme";
 import ReferenceSelect from "../inputs/ReferenceSelect";
 import StaticTargets from "./StaticTargets";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
-  const watchTargetType = methods.watch("target_type");
+const Component = () => {
+  const {
+    control,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+  const watchTargetType = watch("target_type");
   const styles = useStyles(getStyles);
   return (
     <FieldSet label="Targets">
-      <InputControl
+      <Controller
         name="target_type"
-        control={methods.control}
+        control={control}
         defaultValue="reference"
         render={({ field: { ref, ...f } }) => (
           <RadioButtonGroup
@@ -45,21 +49,18 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
             tooltip="List of targets to scrape."
             labelWidth={14}
             error="You must specify the targets parameter"
-            invalid={!!methods.errors["targets"]}
+            invalid={!!errors["targets"]}
           >
             <ReferenceSelect
               name="targets"
               exportName="list(Target)"
-              control={methods.control}
+              control={control}
             />
           </InlineField>
         </VerticalGroup>
       )}
       {watchTargetType === "static" && (
-        <StaticTargets.Component
-          control={methods.control}
-          errors={methods.errors}
-        />
+        <StaticTargets.Component control={control} errors={errors} />
       )}
     </FieldSet>
   );

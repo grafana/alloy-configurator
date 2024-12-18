@@ -1,8 +1,13 @@
-import { FormAPI, InlineField } from "@grafana/ui";
+import { InlineField } from "@grafana/ui";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 import { RelabelRules, transformRules } from "../common/RelabelRules";
+import { useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -10,15 +15,15 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Where the metrics should be forwarded to, after relabeling takes place."
         labelWidth={22}
         error="You must specify a list of destinations"
-        invalid={!!methods.errors["targets"]}
+        invalid={!!errors["targets"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="PrometheusReceiver"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
-      <RelabelRules methods={methods} />
+      <RelabelRules />
     </>
   );
 };

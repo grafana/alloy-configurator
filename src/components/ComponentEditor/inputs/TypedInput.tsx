@@ -1,13 +1,6 @@
 import * as React from "react";
-import {
-  Dropdown,
-  IconButton,
-  IconName,
-  Input,
-  InputControl,
-  Menu,
-} from "@grafana/ui";
-import { Control, get } from "react-hook-form";
+import { Dropdown, IconButton, IconName, Input, Menu } from "@grafana/ui";
+import { Control, Controller, get } from "react-hook-form";
 
 type Type = "literal" | "reference" | "env";
 
@@ -47,7 +40,7 @@ const TypedInput = ({
   width,
 }: {
   name: string;
-  control: Control<Record<string, any>>;
+  control: Control<any>;
   rules?: Object;
   placeholder?: string;
   defaultValue?: Record<string, any> | string;
@@ -82,7 +75,7 @@ const TypedInput = ({
   );
   const types = Object.keys(InputTypes);
   return (
-    <InputControl
+    <Controller
       name={name}
       control={control}
       rules={rules || {}}
@@ -118,7 +111,7 @@ const TypedInput = ({
             </Dropdown>
           }
           value={inputValue}
-          type={inputType !== "literal" ? "text" : type ?? "text"}
+          type={inputType !== "literal" ? "text" : (type ?? "text")}
           onChange={(v) => {
             setInputValue(v.currentTarget.value);
             onChange(outValue(v.currentTarget.value, inputType));

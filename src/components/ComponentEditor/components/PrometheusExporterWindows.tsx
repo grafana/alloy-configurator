@@ -1,5 +1,6 @@
 import { SelectableValue } from "@grafana/data";
-import { FormAPI, InlineField, InputControl, MultiSelect } from "@grafana/ui";
+import { InlineField, MultiSelect } from "@grafana/ui";
+import { Controller, useFormContext } from "react-hook-form";
 import TypedInput from "../inputs/TypedInput";
 
 const collectors = [
@@ -168,7 +169,8 @@ const collectors = [
   },
 ];
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const { control } = useFormContext();
   const commonOptions = {
     labelWidth: 25,
   };
@@ -180,12 +182,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="List of collectors to enable."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           name="enabled_collectors"
           render={({ field: { ref, ...field } }) => (
             <MultiSelect width={25} {...field} options={collectors} />
           )}
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -193,7 +195,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Configure timeout for collecting metrics."
         {...commonOptions}
       >
-        <TypedInput name="timeout" control={methods.control} />
+        <TypedInput name="timeout" control={control} />
       </InlineField>
     </>
   );

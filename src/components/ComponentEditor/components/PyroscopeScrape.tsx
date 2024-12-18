@@ -1,10 +1,4 @@
-import {
-  Collapse,
-  FieldSet,
-  FormAPI,
-  InlineField,
-  InlineSwitch,
-} from "@grafana/ui";
+import { Collapse, FieldSet, InlineField, InlineSwitch } from "@grafana/ui";
 
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 import TypedInput from "../inputs/TypedInput";
@@ -12,6 +6,7 @@ import AuthenticationEditor from "../common/AuthenticationEditor";
 import TlsBlock from "../common/TlsBlock";
 import { useState } from "react";
 import TargetSelector from "../common/TargetSelector";
+import { useFormContext } from "react-hook-form";
 
 const ProfileOptions = [
   { label: "Memory", name: "memory" },
@@ -23,7 +18,7 @@ const ProfileOptions = [
   { label: "Custom", name: "custom" },
 ];
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const [tlsConfigOpen, setTlsConfigOpen] = useState(false);
   const [profilingConfigOpen, setProfilingConfigOpen] = useState(false);
 
@@ -31,6 +26,11 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
     labelWidth: 14,
   };
 
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -38,16 +38,16 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Receivers for the data scraped by this component"
         labelWidth={14}
         error="You must specify the destination"
-        invalid={!!methods.errors["forward_to"]}
+        invalid={!!errors["forward_to"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="ProfilesReceiver"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
-      <AuthenticationEditor.Component methods={methods} />
-      <TargetSelector.Component methods={methods} />
+      <AuthenticationEditor.Component />
+      <TargetSelector.Component />
       <FieldSet label="Advanced Configuration">
         <Collapse
           label="TLS Settings"
@@ -55,7 +55,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           onToggle={() => setTlsConfigOpen(!tlsConfigOpen)}
           collapsible
         >
-          <TlsBlock parent="tls_config" methods={methods} variant={"client"} />
+          <TlsBlock parent="tls_config" variant={"client"} />
         </Collapse>
         <Collapse
           label="Profiling Configuration"
@@ -68,17 +68,14 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
             tooltip="The path prefix to use when scraping targets."
             {...commonOptions}
           >
-            <TypedInput
-              control={methods.control}
-              name="profiling_config.path_prefix"
-            />
+            <TypedInput control={control} name="profiling_config.path_prefix" />
           </InlineField>
           {ProfileOptions.map((o) => (
             <FieldSet label={<h5>{o.label}</h5>} key={o.name}>
               <InlineField label="Enabled" {...commonOptions}>
                 <InlineSwitch
-                  {...methods.register(
-                    `profiling_config.profile.${o.name}.enabled` as const
+                  {...register(
+                    `profiling_config.profile.${o.name}.enabled` as const,
                   )}
                 />
               </InlineField>
@@ -88,8 +85,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 {...commonOptions}
               >
                 <InlineSwitch
-                  {...methods.register(
-                    `profiling_config.profile.${o.name}.delta` as const
+                  {...register(
+                    `profiling_config.profile.${o.name}.delta` as const,
                   )}
                 />
               </InlineField>
@@ -99,7 +96,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 {...commonOptions}
               >
                 <TypedInput
-                  control={methods.control}
+                  control={control}
                   name={`profiling_config.profile.${o.name}.path` as const}
                 />
               </InlineField>

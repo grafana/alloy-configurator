@@ -1,22 +1,18 @@
-import {
-  FormAPI,
-  InlineField,
-  InlineSwitch,
-  Input,
-  VerticalGroup,
-} from "@grafana/ui";
+import { InlineField, InlineSwitch, Input, VerticalGroup } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 25,
   };
+  const { control, register } = useFormContext();
   return (
     <>
       <VerticalGroup>
         <InlineField label="Forward to" {...commonOptions}>
           <ReferenceMultiSelect
-            control={methods.control}
+            control={control}
             name="forward_to"
             exportName="PrometheusReceiver"
           />
@@ -26,21 +22,21 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           tooltip="Whether to include target_info metrics."
           {...commonOptions}
         >
-          <InlineSwitch {...methods.register("include_target_info")} />
+          <InlineSwitch {...register("include_target_info")} />
         </InlineField>
         <InlineField
           label="Include scope"
           tooltip="Whether to include otel_scope_info metrics."
           {...commonOptions}
         >
-          <InlineSwitch {...methods.register("include_scope_info")} />
+          <InlineSwitch {...register("include_scope_info")} />
         </InlineField>
         <InlineField
           label="GC Frequency"
           tooltip="How often to clean up stale metrics from memory."
           {...commonOptions}
         >
-          <Input placeholder="5m" {...methods.register("gc_frequency")} />
+          <Input placeholder="5m" {...register("gc_frequency")} />
         </InlineField>
       </VerticalGroup>
     </>

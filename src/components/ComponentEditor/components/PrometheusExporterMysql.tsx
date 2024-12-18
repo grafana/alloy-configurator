@@ -1,21 +1,22 @@
-import { FormAPI, InlineField, Input } from "@grafana/ui";
+import { InlineField, Input } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 
-const PrometheusExporterMysql = ({
-  methods,
-}: {
-  methods: FormAPI<Record<string, any>>;
-}) => {
+const PrometheusExporterMysql = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <InlineField
         label="Data Source Name"
         tooltip="Data Source Name for the MySQL server to connect to."
         error="The data source name is required"
-        invalid={!!methods.errors["data_source_name"]}
+        invalid={!!errors["data_source_name"]}
         labelWidth={20}
       >
         <Input
-          {...methods.register("data_source_name", { required: true })}
+          {...register("data_source_name", { required: true })}
           placeholder="root@(server-a:3306)/"
         />
       </InlineField>

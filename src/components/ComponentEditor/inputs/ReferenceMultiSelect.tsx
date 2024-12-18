@@ -1,6 +1,6 @@
 import { SelectableValue } from "@grafana/data";
-import { InputControl, MultiSelect } from "@grafana/ui";
-import { get } from "react-hook-form";
+import { MultiSelect } from "@grafana/ui";
+import { Controller, get } from "react-hook-form";
 import { useState } from "react";
 
 import { useComponentContext } from "../../../state";
@@ -26,7 +26,7 @@ const ReferenceMultiSelect = ({
     exportName,
   );
   return (
-    <InputControl
+    <Controller
       defaultValue={value}
       render={({ field: { onChange, ref, ...field } }) => (
         <MultiSelect

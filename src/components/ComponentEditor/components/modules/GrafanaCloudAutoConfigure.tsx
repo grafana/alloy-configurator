@@ -1,10 +1,15 @@
-import { Alert, FormAPI, InlineField, VerticalGroup } from "@grafana/ui";
+import { Alert, InlineField, VerticalGroup } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import TypedInput from "../../inputs/TypedInput";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 25,
   };
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <VerticalGroup>
@@ -12,12 +17,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           label="Stack name"
           tooltip="Name of your stack as shown in the Grafana Cloud Console"
           error="The stack name is required"
-          invalid={!!methods.errors["arguments"]?.stack_name}
+          invalid={!!errors["arguments"]?.stack_name}
           {...commonOptions}
         >
           <TypedInput
             name="stack_name"
-            control={methods.control}
+            control={control}
             rules={{ required: true }}
           />
         </InlineField>
@@ -25,12 +30,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           label="Token"
           tooltip="Access policy token or API Key"
           error="The token is required"
-          invalid={!!methods.errors["arguments"]?.token}
+          invalid={!!errors["arguments"]?.token}
           {...commonOptions}
         >
           <TypedInput
             name="token"
-            control={methods.control}
+            control={control}
             rules={{ required: true }}
           />
         </InlineField>

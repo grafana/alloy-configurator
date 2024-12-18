@@ -1,10 +1,12 @@
-import { FormAPI, InlineField, Input, VerticalGroup } from "@grafana/ui";
+import { InlineField, Input, VerticalGroup } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 25,
   };
+  const { register, control } = useFormContext();
   return (
     <>
       <VerticalGroup>
@@ -13,7 +15,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           tooltip="How long to wait before flushing the batch."
           {...commonOptions}
         >
-          <Input {...methods.register("timeout")} placeholder="200ms" />
+          <Input {...register("timeout")} placeholder="200ms" />
         </InlineField>
         <InlineField
           label="Batch size"
@@ -22,7 +24,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         >
           <Input
             type="number"
-            {...methods.register("send_batch_size", { valueAsNumber: true })}
+            {...register("send_batch_size", { valueAsNumber: true })}
             placeholder="8192"
           />
         </InlineField>
@@ -33,7 +35,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         >
           <Input
             type="number"
-            {...methods.register("send_batch_max_size", {
+            {...register("send_batch_max_size", {
               valueAsNumber: true,
             })}
             placeholder="0"
@@ -44,21 +46,21 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
       <VerticalGroup>
         <InlineField label="Metrics" {...commonOptions}>
           <ReferenceMultiSelect
-            control={methods.control}
+            control={control}
             name="output.metrics"
             exportName="otel.MetricsConsumer"
           />
         </InlineField>
         <InlineField label="Logs" {...commonOptions}>
           <ReferenceMultiSelect
-            control={methods.control}
+            control={control}
             name="output.logs"
             exportName="otel.LogsConsumer"
           />
         </InlineField>
         <InlineField label="traces" {...commonOptions}>
           <ReferenceMultiSelect
-            control={methods.control}
+            control={control}
             name="output.traces"
             exportName="otel.TracesConsumer"
           />

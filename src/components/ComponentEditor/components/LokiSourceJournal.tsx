@@ -1,10 +1,16 @@
-import { FieldSet, FormAPI, InlineField, InlineSwitch } from "@grafana/ui";
+import { FieldSet, InlineField, InlineSwitch } from "@grafana/ui";
 import ReferenceSelect from "../inputs/ReferenceSelect";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 import TypedInput from "../inputs/TypedInput";
 import LabelsInput from "../inputs/LabelsInput";
+import { useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   const commonOptions = { labelWidth: 24 };
   return (
     <>
@@ -13,14 +19,14 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Whether to forward the original journal entry as JSON."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("format_as_json")} />
+        <InlineSwitch {...register("format_as_json")} />
       </InlineField>
       <InlineField
         label="Max age"
         tooltip="The oldest relative time from process start that will be read."
         {...commonOptions}
       >
-        <TypedInput name="max_age" control={methods.control} placeholder="7h" />
+        <TypedInput name="max_age" control={control} placeholder="7h" />
       </InlineField>
       <InlineField
         label="Path"
@@ -29,7 +35,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
       >
         <TypedInput
           name="path"
-          control={methods.control}
+          control={control}
           placeholder="/var/log/journal"
         />
       </InlineField>
@@ -38,7 +44,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Journal matches to filter. The + character is not supported, only logical AND matches will be added."
         {...commonOptions}
       >
-        <TypedInput name="matches" control={methods.control} />
+        <TypedInput name="matches" control={control} />
       </InlineField>
       <InlineField
         label="Relabel Rules"
@@ -48,7 +54,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         <ReferenceSelect
           name="relabel_rules"
           exportName="RelabelRules"
-          control={methods.control}
+          control={control}
           width={27}
         />
       </InlineField>
@@ -57,18 +63,18 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="List of receivers to send log entries to."
         {...commonOptions}
         error="You must specify the destination"
-        invalid={!!methods.errors["forward_to"]}
+        invalid={!!errors["forward_to"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="LokiReceiver"
-          control={methods.control}
+          control={control}
           rules={{ required: true }}
           width={27}
         />
       </InlineField>
       <FieldSet label="Labels">
-        <LabelsInput name="labels_array" control={methods.control} />
+        <LabelsInput name="labels_array" control={control} />
       </FieldSet>
     </>
   );
