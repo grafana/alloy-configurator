@@ -1,8 +1,13 @@
-import { FormAPI, InlineField } from "@grafana/ui";
+import { InlineField } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import { RelabelRules, transformRules } from "../common/RelabelRules";
 import ReferenceSelect from "../inputs/ReferenceSelect";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    formState: { errors },
+    control,
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -10,16 +15,16 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Targets to relabel"
         labelWidth={22}
         error="You must specify a list of destinations"
-        invalid={!!methods.errors["targets"]}
+        invalid={!!errors["targets"]}
       >
         <ReferenceSelect
           name="targets"
           exportName="list(Target)"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
 
-      <RelabelRules methods={methods} />
+      <RelabelRules />
     </>
   );
 };

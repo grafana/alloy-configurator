@@ -1,17 +1,24 @@
 import {
   Button,
-  FieldArray,
   FieldSet,
-  FormAPI,
   InlineField,
   InlineFieldRow,
   Input,
 } from "@grafana/ui";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 14,
   };
+  const { control, register } = useFormContext<{
+    [key: string]: any;
+    path_targets: Array<Record<string, any>>;
+  }>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "path_targets",
+  });
   return (
     <>
       <InlineField
@@ -19,56 +26,48 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="How often to sync filesystem and targets"
         {...commonOptions}
       >
-        <Input {...methods.register("sync_period")} placeholder="10s" />
+        <Input {...register("sync_period")} placeholder="10s" />
       </InlineField>
       <FieldSet label="Path Targets">
-        <FieldArray control={methods.control} name="path_targets">
-          {({ fields, append, remove }) => (
-            <>
-              {fields.map((field, index) => (
-                <InlineFieldRow key={field.id}>
-                  <InlineField
-                    label="Include"
-                    tooltip="Target to expand."
-                    {...commonOptions}
-                  >
-                    <Input
-                      defaultValue={field["__path__"]}
-                      {...methods.register(
-                        `path_targets[${index}].__path__` as const
-                      )}
-                    />
-                  </InlineField>
-                  <InlineField
-                    label="Exclude"
-                    tooltip="Exclude files matching this pattern"
-                    {...commonOptions}
-                  >
-                    <Input
-                      defaultValue={field["__path_exclude__"]}
-                      {...methods.register(
-                        `path_targets[${index}].__path_exclude__` as const
-                      )}
-                    />
-                  </InlineField>
-                  <Button
-                    fill="outline"
-                    variant="secondary"
-                    icon="trash-alt"
-                    tooltip="Delete this pattern"
-                    onClick={(e) => {
-                      remove(index);
-                      e.preventDefault();
-                    }}
-                  />
-                </InlineFieldRow>
-              ))}
-              <Button onClick={() => append({})} icon="plus">
-                Add
-              </Button>
-            </>
-          )}
-        </FieldArray>
+        {fields.map((field, index) => (
+          <InlineFieldRow key={field.id}>
+            <InlineField
+              label="Include"
+              tooltip="Target to expand."
+              {...commonOptions}
+            >
+              <Input
+                defaultValue={field["__path__"]}
+                {...register(`path_targets[${index}].__path__` as const)}
+              />
+            </InlineField>
+            <InlineField
+              label="Exclude"
+              tooltip="Exclude files matching this pattern"
+              {...commonOptions}
+            >
+              <Input
+                defaultValue={field["__path_exclude__"]}
+                {...register(
+                  `path_targets[${index}].__path_exclude__` as const,
+                )}
+              />
+            </InlineField>
+            <Button
+              fill="outline"
+              variant="secondary"
+              icon="trash-alt"
+              tooltip="Delete this pattern"
+              onClick={(e) => {
+                remove(index);
+                e.preventDefault();
+              }}
+            />
+          </InlineFieldRow>
+        ))}
+        <Button onClick={() => append({})} icon="plus">
+          Add
+        </Button>
       </FieldSet>
     </>
   );
@@ -85,7 +84,7 @@ const LocalFileMatch = {
         if (target["__path_exclude__"] === "")
           delete target["__path_exclude__"];
         return target;
-      }
+      },
     );
     return data;
   },

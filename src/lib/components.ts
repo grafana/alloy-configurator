@@ -1,7 +1,6 @@
 import Parser from "web-tree-sitter";
 import * as monaco from "monaco-editor";
 import { Attribute, Block } from "./river";
-import { FormAPI } from "@grafana/ui";
 import GrafanaCloudAutoconfigure from "../components/ComponentEditor/components/modules/GrafanaCloudAutoConfigure";
 
 type LiteralType =
@@ -132,11 +131,7 @@ export class ComponentType extends BlockType {
 }
 
 export interface ComponentForm {
-  Component: ({
-    methods,
-  }: {
-    methods: FormAPI<Record<string, any>>;
-  }) => JSX.Element;
+  Component: () => JSX.Element;
   preTransform: (data: Record<string, any>) => Record<string, any>;
   postTransform: (data: Record<string, any>) => Record<string, any>;
 }

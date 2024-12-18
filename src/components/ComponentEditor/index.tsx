@@ -1,11 +1,4 @@
-import {
-  Form,
-  Field,
-  Input,
-  Button,
-  FormAPI,
-  HorizontalGroup,
-} from "@grafana/ui";
+import { Field, Input, Button, HorizontalGroup } from "@grafana/ui";
 import { faro } from "@grafana/faro-web-sdk";
 import { Block, toBlock } from "../../lib/river";
 import PrometheusRemoteWrite from "./components/PrometheusRemoteWrite";
@@ -38,6 +31,7 @@ import PrometheusExporterWindows from "./components/PrometheusExporterWindows";
 import LokiProcess from "./components/LokiProcess";
 import { useComponentContext } from "../../state";
 import ImportGit from "./components/ImportGit";
+import { FormProvider, useForm } from "react-hook-form";
 
 interface ComponentEditorProps {
   updateComponent: (component: Block) => void;
@@ -57,11 +51,7 @@ const ComponentEditor = ({
     preTransform,
     postTransform,
   }: {
-    Component: ({
-      methods,
-    }: {
-      methods: FormAPI<Record<string, any>>;
-    }) => JSX.Element;
+    Component: () => JSX.Element;
     preTransform: (data: Record<string, any>) => Record<string, any>;
     postTransform: (data: Record<string, any>) => Record<string, any>;
   } = (() => {
@@ -155,47 +145,54 @@ const ComponentEditor = ({
   formValues = preTransform(formValues);
   if (spec && spec.multi) formValues["label"] = component.label;
 
+  let methods = useForm({
+    defaultValues: formValues,
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+  const onSubmit = ({
+    label,
+    ...args
+  }: {
+    [key: string]: any;
+    label: string;
+  }) => {
+    const transformed = postTransform(args);
+    updateComponent(
+      toBlock(
+        component.name,
+        transformed,
+        label,
+        KnownComponents[component.name],
+      )!,
+    );
+  };
+
   return (
-    <Form
-      onSubmit={({ label, ...args }) => {
-        const transformed = postTransform(args);
-        updateComponent(
-          toBlock(
-            component.name,
-            transformed,
-            label,
-            KnownComponents[component.name],
-          )!,
-        );
-      }}
-      defaultValues={formValues}
-      className={styles.form}
-    >
-      {(methods) => {
-        const { register, errors } = methods;
-        return (
-          <>
-            {spec && spec.multi && (
-              <Field
-                label="Label"
-                description="Component Label"
-                invalid={!!errors["label"]}
-                error="A label is required"
-              >
-                <Input {...register("label", { required: true })} />
-              </Field>
-            )}
-            <Component methods={methods} />
-            <HorizontalGroup>
-              <Button type="submit">Save</Button>
-              <Button onClick={discard} variant="secondary">
-                Discard
-              </Button>
-            </HorizontalGroup>
-          </>
-        );
-      }}
-    </Form>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        {spec && spec.multi && (
+          <Field
+            label="Label"
+            description="Component Label"
+            invalid={!!errors["label"]}
+            error="A label is required"
+          >
+            <Input {...register("label", { required: true })} />
+          </Field>
+        )}
+        <Component />
+        <HorizontalGroup>
+          <Button type="submit">Save</Button>
+          <Button onClick={discard} variant="secondary">
+            Discard
+          </Button>
+        </HorizontalGroup>
+      </form>
+    </FormProvider>
   );
 };
 

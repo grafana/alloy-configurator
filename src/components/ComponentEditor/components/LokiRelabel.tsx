@@ -1,8 +1,14 @@
-import { FormAPI, InlineField, Input } from "@grafana/ui";
+import { InlineField, Input } from "@grafana/ui";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 import { RelabelRules, transformRules } from "../common/RelabelRules";
+import { useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    formState: { errors },
+    control,
+    register,
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -10,12 +16,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Where to forward log entries after relabeling."
         labelWidth={22}
         error="You must specify a list of destinations"
-        invalid={!!methods.errors["targets"]}
+        invalid={!!errors["targets"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="LokiReceiver"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -23,9 +29,9 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="The maximum number of elements to hold in the relabeling cache."
         labelWidth={22}
       >
-        <Input type="number" {...methods.register("max_cache_size")} />
+        <Input type="number" {...register("max_cache_size")} />
       </InlineField>
-      <RelabelRules methods={methods} />
+      <RelabelRules />
     </>
   );
 };

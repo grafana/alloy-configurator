@@ -1,12 +1,6 @@
 import { SelectableValue } from "@grafana/data";
-import {
-  FormAPI,
-  InlineField,
-  Input,
-  InlineSwitch,
-  InputControl,
-  MultiSelect,
-} from "@grafana/ui";
+import { InlineField, Input, InlineSwitch, MultiSelect } from "@grafana/ui";
+import { Controller, useFormContext } from "react-hook-form";
 
 const collectors = [
   {
@@ -466,10 +460,11 @@ const collectors = [
   },
 ];
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 25,
   };
+  const { register, control } = useFormContext();
   return (
     <>
       <h6>Basic Settings</h6>
@@ -478,12 +473,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Overrides the default set of enabled collectors with the collectors listed."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           name="set_collectors"
           render={({ field: { ref, ...field } }) => (
             <MultiSelect width={25} {...field} options={collectors} />
           )}
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -491,7 +486,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="	Collectors to mark as enabled in addition to the default set."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           name="enable_collectors"
           render={({ field: { ref, ...field } }) => (
             <MultiSelect
@@ -500,7 +495,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
               options={collectors.filter((c) => !c.enabled)}
             />
           )}
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -508,7 +503,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="	Collectors from the default set to mark as disabled."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           name="disable_collectors"
           render={({ field: { ref, ...field } }) => (
             <MultiSelect
@@ -517,7 +512,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
               options={collectors.filter((c) => c.enabled)}
             />
           )}
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <InlineField
@@ -525,28 +520,28 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Whether metrics about the exporter itself should be reported."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("include_exporter_metrics")} />
+        <InlineSwitch {...register("include_exporter_metrics")} />
       </InlineField>
       <InlineField
         label="ProcFS Path"
         tooltip="The ProcFS mountpoint."
         {...commonOptions}
       >
-        <Input {...methods.register("procfs_path")} placeholder="/proc" />
+        <Input {...register("procfs_path")} placeholder="/proc" />
       </InlineField>
       <InlineField
         label="SysFS Path"
         tooltip="The SysFS mountpoint."
         {...commonOptions}
       >
-        <Input {...methods.register("sysfs_path")} placeholder="/sys" />
+        <Input {...register("sysfs_path")} placeholder="/sys" />
       </InlineField>
       <InlineField
         label="Root Path"
         tooltip="The root mountpoint."
         {...commonOptions}
       >
-        <Input {...methods.register("rootfs_path")} placeholder="/" />
+        <Input {...register("rootfs_path")} placeholder="/" />
       </InlineField>
     </>
   );
@@ -562,21 +557,21 @@ const PrometheusExporterUnix = {
       typeof data["set_collectors"][0] === "object"
     )
       data["set_collectors"] = data["set_collectors"]?.map(
-        (x: SelectableValue) => x.value
+        (x: SelectableValue) => x.value,
       );
     if (
       Array.isArray(data["enable_collectors"]) &&
       typeof data["enable_collectors"][0] === "object"
     )
       data["enable_collectors"] = data["enable_collectors"]?.map(
-        (x: SelectableValue) => x.value
+        (x: SelectableValue) => x.value,
       );
     if (
       Array.isArray(data["disable_collectors"]) &&
       typeof data["disable_collectors"][0] === "object"
     )
       data["disable_collectors"] = data["disable_collectors"]?.map(
-        (x: SelectableValue) => x.value
+        (x: SelectableValue) => x.value,
       );
     return data;
   },

@@ -1,31 +1,26 @@
-import {
-  FormAPI,
-  InlineField,
-  InlineSwitch,
-  Input,
-  InputControl,
-  MultiSelect,
-} from "@grafana/ui";
+import { InlineField, InlineSwitch, Input, MultiSelect } from "@grafana/ui";
+import { Controller, useFormContext } from "react-hook-form";
 
-const PrometheusExporterRedis = ({
-  methods,
-}: {
-  methods: FormAPI<Record<string, any>>;
-}) => {
+const PrometheusExporterRedis = () => {
   const commonOptions = {
     labelWidth: 26,
   };
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <InlineField
         label="Redis Address"
         tooltip="Address (host and port) of the Redis instance to connect to."
         error="The redis address is required"
-        invalid={!!methods.errors["redis_addr"]}
+        invalid={!!errors["redis_addr"]}
         {...commonOptions}
       >
         <Input
-          {...methods.register("redis_addr", { required: true })}
+          {...register("redis_addr", { required: true })}
           placeholder="localhost:6379"
         />
       </InlineField>
@@ -34,35 +29,35 @@ const PrometheusExporterRedis = ({
         tooltip="User name to use for authentication (Redis ACL for Redis 6.0 and newer)."
         {...commonOptions}
       >
-        <Input {...methods.register("redis_user")} />
+        <Input {...register("redis_user")} />
       </InlineField>
       <InlineField
         label="Redis password"
         tooltip="Password of the Redis instance."
         {...commonOptions}
       >
-        <Input {...methods.register("redis_password")} />
+        <Input {...register("redis_password")} />
       </InlineField>
       <InlineField
         label="Redis password file"
         tooltip="Path of a file containing a password."
         {...commonOptions}
       >
-        <Input {...methods.register("redis_password_file")} />
+        <Input {...register("redis_password_file")} />
       </InlineField>
       <InlineField
         label="Connection timeout"
         tooltip="Timeout for connection to Redis instance (in Golang duration format)."
         {...commonOptions}
       >
-        <Input {...methods.register("connection_timeout")} placeholder="15s" />
+        <Input {...register("connection_timeout")} placeholder="15s" />
       </InlineField>
       <InlineField
         label="Cluster"
         tooltip="Whether the connection is to a Redis cluster."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("is_cluster")} />
+        <InlineSwitch {...register("is_cluster")} />
       </InlineField>
       <h6>Advanced Options</h6>
       <InlineField
@@ -70,56 +65,56 @@ const PrometheusExporterRedis = ({
         tooltip="Path of a JSON file containing a map of Redis URIs to passwords."
         {...commonOptions}
       >
-        <Input {...methods.register("redis_password_map_file")} />
+        <Input {...register("redis_password_map_file")} />
       </InlineField>
       <InlineField
         label="TLS client key file"
         tooltip="Name of the client key file (including full path) if the server requires TLS client authentication."
         {...commonOptions}
       >
-        <Input {...methods.register("tls_client_key_file")} />
+        <Input {...register("tls_client_key_file")} />
       </InlineField>
       <InlineField
         label="TLS client cert file"
         tooltip="Name of the client certificate file (including full path) if the server requires TLS client authentication."
         {...commonOptions}
       >
-        <Input {...methods.register("tls_client_cert_file")} />
+        <Input {...register("tls_client_cert_file")} />
       </InlineField>
       <InlineField
         label="TLS CA cert file"
         tooltip="Name of the CA certificate file (including full path) if the server requires TLS client authentication."
         {...commonOptions}
       >
-        <Input {...methods.register("tls_ca_cert_file")} />
+        <Input {...register("tls_ca_cert_file")} />
       </InlineField>
       <InlineField
         label="Skip tls verification"
         tooltip="Whether to to skip TLS verification."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("skip_tls_verification")} />
+        <InlineSwitch {...register("skip_tls_verification")} />
       </InlineField>
       <InlineField
         label="Namespace"
         tooltip="Namespace for the metrics."
         {...commonOptions}
       >
-        <Input {...methods.register("namespace")} placeholder="redis" />
+        <Input {...register("namespace")} placeholder="redis" />
       </InlineField>
       <InlineField
         label="Config command"
         tooltip="What to use for the CONFIG command."
         {...commonOptions}
       >
-        <Input {...methods.register("config_command")} placeholder="CONFIG" />
+        <Input {...register("config_command")} placeholder="CONFIG" />
       </InlineField>
       <InlineField
         label="Check keys"
         tooltip="List of key-patterns to export value and length/size, searched for with SCAN."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -131,7 +126,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="check_keys"
         />
       </InlineField>
@@ -140,7 +135,7 @@ const PrometheusExporterRedis = ({
         tooltip="List of Lua regular expressions (regex) for grouping keys."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -152,7 +147,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="check_keys_groups"
         />
       </InlineField>
@@ -163,7 +158,7 @@ const PrometheusExporterRedis = ({
       >
         <Input
           type="number"
-          {...methods.register("check_key_groups_batch_size", {
+          {...register("check_key_groups_batch_size", {
             valueAsNumber: true,
           })}
           placeholder="10000"
@@ -176,7 +171,7 @@ const PrometheusExporterRedis = ({
       >
         <Input
           type="number"
-          {...methods.register("max_distinct_key_groups", {
+          {...register("max_distinct_key_groups", {
             valueAsNumber: true,
           })}
           placeholder="100"
@@ -187,7 +182,7 @@ const PrometheusExporterRedis = ({
         tooltip="List of single keys to export value and length/size."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -199,7 +194,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="check_single_keys"
         />
       </InlineField>
@@ -208,7 +203,7 @@ const PrometheusExporterRedis = ({
         tooltip="List of stream-patterns to export info about streams, groups, and consumers to search for with SCAN."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -220,7 +215,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="check_streams"
         />
       </InlineField>
@@ -229,7 +224,7 @@ const PrometheusExporterRedis = ({
         tooltip="List of single streams to export info about streams, groups, and consumers."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -241,7 +236,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="check_single_streams"
         />
       </InlineField>
@@ -250,7 +245,7 @@ const PrometheusExporterRedis = ({
         tooltip="List of individual keys to export counts for."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -262,7 +257,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="count_keys"
         />
       </InlineField>
@@ -271,14 +266,14 @@ const PrometheusExporterRedis = ({
         tooltip="Path to Lua Redis script for collecting extra metrics."
         {...commonOptions}
       >
-        <Input {...methods.register("script_path")} />
+        <Input {...register("script_path")} />
       </InlineField>
       <InlineField
         label="Script paths"
         tooltip="	List of paths to Lua Redis scripts for collecting extra metrics."
         {...commonOptions}
       >
-        <InputControl
+        <Controller
           render={({ field: { onChange, ref, ...field } }) => (
             <MultiSelect
               {...field}
@@ -290,7 +285,7 @@ const PrometheusExporterRedis = ({
             />
           )}
           defaultValue={[]}
-          control={methods.control}
+          control={control}
           name="script_paths"
         />
       </InlineField>
@@ -299,49 +294,49 @@ const PrometheusExporterRedis = ({
         tooltip="Whether to scrape Client List specific metrics."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("export_client_list")} />
+        <InlineSwitch {...register("export_client_list")} />
       </InlineField>
       <InlineField
         label="Export client port"
         tooltip="Whether to include the client’s port when exporting the client list."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("export_client_port")} />
+        <InlineSwitch {...register("export_client_port")} />
       </InlineField>
       <InlineField
         label="Redis metrics only"
         tooltip="Whether to just export metrics or to also export go runtime metrics."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("redis_metrics_only")} />
+        <InlineSwitch {...register("redis_metrics_only")} />
       </InlineField>
       <InlineField
         label="Ping on connect"
         tooltip="Whether to ping the Redis instance after connecting."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("ping_on_connect")} />
+        <InlineSwitch {...register("ping_on_connect")} />
       </InlineField>
       <InlineField
         label="Include system metrics"
         tooltip="Whether to include system metrics (e.g. redis_total_system_memory_bytes)."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("incl_system_metrics")} />
+        <InlineSwitch {...register("incl_system_metrics")} />
       </InlineField>
       <InlineField
         label="Set client name"
         tooltip="Whether to set client name to redis_exporter."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("set_client_name")} />
+        <InlineSwitch {...register("set_client_name")} />
       </InlineField>
       <InlineField
         label="Tile38"
         tooltip="Whether to scrape Tile38-specific metrics."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("is_tile38")} />
+        <InlineSwitch {...register("is_tile38")} />
       </InlineField>
     </>
   );

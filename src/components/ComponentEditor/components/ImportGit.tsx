@@ -1,8 +1,10 @@
-import { FormAPI, InlineField } from "@grafana/ui";
+import { InlineField } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 
 import TypedInput from "../inputs/TypedInput";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const { control } = useFormContext();
   return (
     <>
       <InlineField
@@ -10,7 +12,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Source repository containing an alloy module"
         labelWidth={20}
       >
-        <TypedInput width={64} control={methods.control} name="repository" />
+        <TypedInput width={64} control={control} name="repository" />
       </InlineField>
       <InlineField
         label="Revision"
@@ -20,7 +22,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         <TypedInput
           width={64}
           placeholder="main"
-          control={methods.control}
+          control={control}
           name="revision"
         />
       </InlineField>
@@ -29,18 +31,14 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Path of the alloy module file to import"
         labelWidth={20}
       >
-        <TypedInput width={64} control={methods.control} name="path" />
+        <TypedInput width={64} control={control} name="path" />
       </InlineField>
       <InlineField
         label="Pull frequency"
         tooltip="How often the repository should be checked for updates to the specified revision"
         labelWidth={20}
       >
-        <TypedInput
-          width={64}
-          control={methods.control}
-          name="pull_frequency"
-        />
+        <TypedInput width={64} control={control} name="pull_frequency" />
       </InlineField>
     </>
   );

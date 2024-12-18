@@ -1,5 +1,4 @@
 import {
-  FormAPI,
   Input,
   Alert,
   LinkButton,
@@ -8,12 +7,18 @@ import {
   InlineField,
   InlineSwitch,
 } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import AuthenticationEditor from "../common/AuthenticationEditor";
 import TlsConfig from "../common/TlsConfig";
 import MultiBlock from "../inputs/MultiBlock";
 import TypedInput from "../inputs/TypedInput";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   const commonOptions = {
     labelWidth: 24,
   };
@@ -33,7 +38,6 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
       <MultiBlock
         name="endpoint"
         title="Endpoints"
-        methods={methods}
         newBlock={{
           enable_http2: true,
           send_exemplars: true,
@@ -52,12 +56,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 label="Endpoint URL"
                 tooltip="Where to send metrics to"
                 error="An endpoint URL is required"
-                invalid={!!methods.errors["endpoint"]?.url}
+                invalid={!!errors["endpoint"]?.url}
                 {...commonOptions}
               >
                 <TypedInput
                   name={`endpoint[${index}].url` as const}
-                  control={methods.control}
+                  control={control}
                   defaultValue={field["url"]}
                 />
               </InlineField>
@@ -67,9 +71,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 {...commonOptions}
               >
                 <InlineSwitch
-                  {...methods.register(
-                    `endpoint[${index}].send_exemplars` as const
-                  )}
+                  {...register(`endpoint[${index}].send_exemplars` as const)}
                   defaultChecked={field["send_exemplars"]}
                 />
               </InlineField>
@@ -79,21 +81,19 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 {...commonOptions}
               >
                 <InlineSwitch
-                  {...methods.register(
-                    `endpoint[${index}].send_native_histograms` as const
+                  {...register(
+                    `endpoint[${index}].send_native_histograms` as const,
                   )}
                   defaultChecked={field["send_native_histograms"]}
                 />
               </InlineField>
               <AuthenticationEditor.Component
-                methods={methods}
                 parent={`endpoint[${index}]` as const}
                 defaultValue={field.auth_type}
               />
               <FieldSet label="Advanced settings">
                 <ControlledCollapse label="TLS Configuration">
                   <TlsConfig
-                    methods={methods}
                     parent={`endpoint[${index}].tls_config` as const}
                     defaultValues={field?.tls_config}
                   />
@@ -105,8 +105,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].metadata_config.send` as const
+                      {...register(
+                        `endpoint[${index}].metadata_config.send` as const,
                       )}
                       defaultChecked={field?.metadata_config?.send}
                     />
@@ -120,7 +120,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                       name={
                         `endpoint[${index}].metadata_config.send_interval` as const
                       }
-                      control={methods.control}
+                      control={control}
                       defaultValue={field?.metadata_config?.send_interval}
                     />
                   </InlineField>
@@ -131,8 +131,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <Input
                       type="number"
-                      {...methods.register(
-                        `endpoint[${index}].metadata_config.max_samples_per_send` as const
+                      {...register(
+                        `endpoint[${index}].metadata_config.max_samples_per_send` as const,
                       )}
                       defaultValue={
                         field?.metadata_config?.max_samples_per_send
@@ -148,7 +148,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].proxy_url` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["proxy_url"]}
                     />
                   </InlineField>
@@ -159,7 +159,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].remote_timeout` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["remote_timeout"]}
                     />
                   </InlineField>
@@ -169,8 +169,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].follow_redirects` as const
+                      {...register(
+                        `endpoint[${index}].follow_redirects` as const,
                       )}
                       defaultChecked={field["follow_redirects"]}
                     />
@@ -181,9 +181,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].enable_http2` as const
-                      )}
+                      {...register(`endpoint[${index}].enable_http2` as const)}
                       defaultChecked={field["enable_http2"]}
                     />
                   </InlineField>
@@ -196,8 +194,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <Input
                       type="number"
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.capacity` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.capacity` as const,
                       )}
                       defaultValue={field?.queue_config?.capacity}
                     />
@@ -209,8 +207,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <Input
                       type="number"
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.min_shards` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.min_shards` as const,
                       )}
                       defaultValue={field?.queue_config?.min_shards}
                     />
@@ -222,8 +220,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <Input
                       type="number"
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.max_shards` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.max_shards` as const,
                       )}
                       defaultValue={field?.queue_config?.max_shards}
                     />
@@ -234,8 +232,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <Input
                       type="number"
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.max_samples_per_send` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.max_samples_per_send` as const,
                       )}
                       defaultValue={field?.queue_config?.max_samples_per_send}
                     />
@@ -246,8 +244,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <Input
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.batch_send_deadline` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.batch_send_deadline` as const,
                       )}
                       defaultValue={field?.queue_config?.batch_send_deadline}
                     />
@@ -258,8 +256,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <Input
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.min_backoff` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.min_backoff` as const,
                       )}
                       defaultValue={field?.queue_config?.min_backoff}
                     />
@@ -270,8 +268,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <Input
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.max_backoff` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.max_backoff` as const,
                       )}
                       defaultValue={field?.queue_config?.max_backoff}
                     />
@@ -282,8 +280,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].queue_config.retry_on_http_429` as const
+                      {...register(
+                        `endpoint[${index}].queue_config.retry_on_http_429` as const,
                       )}
                       defaultChecked={field?.queue_config?.retry_on_http_429}
                     />
@@ -301,30 +299,21 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
             tooltip="How frequently to clean up the WAL."
             {...commonOptions}
           >
-            <TypedInput
-              name="wal.truncate_frequency"
-              control={methods.control}
-            />
+            <TypedInput name="wal.truncate_frequency" control={control} />
           </InlineField>
           <InlineField
             label="Minimum keepalive time"
             tooltip="Minimum time to keep data in the WAL before it can be removed."
             {...commonOptions}
           >
-            <TypedInput
-              name="wal.min_keepalive_time"
-              control={methods.control}
-            />
+            <TypedInput name="wal.min_keepalive_time" control={control} />
           </InlineField>
           <InlineField
             label="Maximum keepalive time"
             tooltip="Maximum time to keep data in the WAL before removing it."
             {...commonOptions}
           >
-            <TypedInput
-              name="wal.max_keepalive_time"
-              control={methods.control}
-            />
+            <TypedInput name="wal.max_keepalive_time" control={control} />
           </InlineField>
         </ControlledCollapse>
       </FieldSet>

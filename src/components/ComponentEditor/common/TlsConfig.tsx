@@ -1,22 +1,16 @@
-import {
-  FormAPI,
-  InlineField,
-  Input,
-  TextArea,
-  InlineSwitch,
-} from "@grafana/ui";
+import { InlineField, Input, TextArea, InlineSwitch } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 
 const TlsConfig = ({
-  methods,
   parent,
   disabled,
   defaultValues,
 }: {
-  methods: FormAPI<Record<string, any>>;
   parent: string;
   disabled?: boolean;
   defaultValues?: Record<string, any>;
 }) => {
+  const methods = useFormContext();
   const commonOptions = {
     labelWidth: 25,
     disabled: disabled || false,

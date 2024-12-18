@@ -1,20 +1,11 @@
-import {
-  FormAPI,
-  InlineField,
-  Input,
-  InputControl,
-  MultiSelect,
-  VerticalGroup,
-} from "@grafana/ui";
+import { InlineField, Input, MultiSelect, VerticalGroup } from "@grafana/ui";
+import { Controller, useFormContext } from "react-hook-form";
 
-const PrometheusExporterGithub = ({
-  methods,
-}: {
-  methods: FormAPI<Record<string, any>>;
-}) => {
+const PrometheusExporterGithub = () => {
   const commonOptions = {
     labelWidth: 14,
   };
+  const { register, control } = useFormContext();
   return (
     <VerticalGroup>
       <InlineField
@@ -22,26 +13,26 @@ const PrometheusExporterGithub = ({
         tooltip="API token to use to authenticate against GitHub."
         {...commonOptions}
       >
-        <Input {...methods.register("api_token")} />
+        <Input {...register("api_token")} />
       </InlineField>
       <InlineField
         label="api_token_file"
         tooltip="File containing API token to use to authenticate against GitHub."
         {...commonOptions}
       >
-        <Input {...methods.register("api_token_file")} />
+        <Input {...register("api_token_file")} />
       </InlineField>
       <InlineField
         label="api_token_file"
         tooltip="File containing API token to use to authenticate against GitHub. Takes precedence over api_token"
         {...commonOptions}
       >
-        <Input {...methods.register("api_token_file")} />
+        <Input {...register("api_token_file")} />
       </InlineField>
       {["organizations", "users", "repositories"].map((type) => {
         return (
           <InlineField label={type} key={type} {...commonOptions}>
-            <InputControl
+            <Controller
               render={({ field: { onChange, ...field } }) => (
                 <MultiSelect
                   {...field}
@@ -53,7 +44,7 @@ const PrometheusExporterGithub = ({
                 />
               )}
               defaultValue={[]}
-              control={methods.control}
+              control={control}
               name={type}
             />
           </InlineField>

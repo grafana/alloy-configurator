@@ -1,7 +1,6 @@
 import {
   Collapse,
   FieldSet,
-  FormAPI,
   InlineField,
   InlineSwitch,
   Input,
@@ -13,8 +12,14 @@ import AuthenticationEditor from "../common/AuthenticationEditor";
 import { useState } from "react";
 import TypedInput from "../inputs/TypedInput";
 import TlsConfig from "../common/TlsConfig";
+import { useFormContext } from "react-hook-form";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   const [tlsConfigOpen, setTlsConfigOpen] = useState(false);
   const [limitConfigOpen, setLimitConfigOpen] = useState(false);
   const [connConfigOpen, setConnConfigOpen] = useState(false);
@@ -29,13 +34,13 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           label="Forward to"
           tooltip="Receivers for the data scraped by this component"
           error="You must specify the destination"
-          invalid={!!methods.errors["forward_to"]}
+          invalid={!!errors["forward_to"]}
           {...commonOptions}
         >
           <ReferenceMultiSelect
             name="forward_to"
             exportName="PrometheusReceiver"
-            control={methods.control}
+            control={control}
           />
         </InlineField>
         <InlineField
@@ -43,53 +48,53 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           tooltip="How frequently to scrape the targets of this scrape config."
           {...commonOptions}
         >
-          <Input {...methods.register("scrape_interval")} placeholder="60s" />
+          <Input {...register("scrape_interval")} placeholder="60s" />
         </InlineField>
         <InlineField
           label="Scrape timeout"
           tooltip="The timeout for scraping targets of this config."
           {...commonOptions}
         >
-          <Input {...methods.register("scrape_timeout")} placeholder="10s" />
+          <Input {...register("scrape_timeout")} placeholder="10s" />
         </InlineField>
         <InlineField
           label="Metrics path"
           tooltip="The HTTP resource path on which to fetch metrics from targets."
           {...commonOptions}
         >
-          <Input placeholder="/metrics" {...methods.register("metrics_path")} />
+          <Input placeholder="/metrics" {...register("metrics_path")} />
         </InlineField>
         <InlineField
           label="Job name"
           tooltip="string	The job name to override the job label with. Defaults to the component name."
           {...commonOptions}
         >
-          <Input {...methods.register("job_name")} />
+          <Input {...register("job_name")} />
         </InlineField>
       </FieldSet>
-      <AuthenticationEditor.Component methods={methods} />
-      <TargetSelector.Component methods={methods} />
+      <AuthenticationEditor.Component />
+      <TargetSelector.Component />
       <FieldSet label="Advanced Configuration">
         <InlineField
           label="Extra metrics"
           tooltip="Whether extra metrics should be generated for scrape targets."
           {...commonOptions}
         >
-          <InlineSwitch {...methods.register("extra_metrics")} />
+          <InlineSwitch {...register("extra_metrics")} />
         </InlineField>
         <InlineField
           label="Honor timestamps"
           tooltip="Indicator whether the scraped timestamps should be respected."
           {...commonOptions}
         >
-          <InlineSwitch {...methods.register("honor_timestamps")} />
+          <InlineSwitch {...register("honor_timestamps")} />
         </InlineField>
         <InlineField
           label="Honor labels"
           tooltip="Indicator whether the scraped metrics should remain unmodified."
           {...commonOptions}
         >
-          <InlineSwitch {...methods.register("honor_labels")} />
+          <InlineSwitch {...register("honor_labels")} />
         </InlineField>
         <Collapse
           label="TLS Settings"
@@ -97,7 +102,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           onToggle={() => setTlsConfigOpen(!tlsConfigOpen)}
           collapsible
         >
-          <TlsConfig parent="tls_config" methods={methods} />
+          <TlsConfig parent="tls_config" />
         </Collapse>
         <Collapse
           label="Limit Configuration"
@@ -112,7 +117,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("body_size_limit", { valueAsNumber: true })}
+              {...register("body_size_limit", { valueAsNumber: true })}
             />
           </InlineField>
           <InlineField
@@ -122,7 +127,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("sample_limit", { valueAsNumber: true })}
+              {...register("sample_limit", { valueAsNumber: true })}
             />
           </InlineField>
           <InlineField
@@ -132,7 +137,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("target_limit", { valueAsNumber: true })}
+              {...register("target_limit", { valueAsNumber: true })}
             />
           </InlineField>
           <InlineField
@@ -142,7 +147,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("label_limit", { valueAsNumber: true })}
+              {...register("label_limit", { valueAsNumber: true })}
             />
           </InlineField>
           <InlineField
@@ -152,7 +157,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("label_name_length_limit", {
+              {...register("label_name_length_limit", {
                 valueAsNumber: true,
               })}
             />
@@ -164,7 +169,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           >
             <Input
               type="number"
-              {...methods.register("label_value_length_limit", {
+              {...register("label_value_length_limit", {
                 valueAsNumber: true,
               })}
             />
@@ -177,24 +182,20 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
           collapsible
         >
           <InlineField label="Scheme" {...commonOptions}>
-            <TypedInput
-              control={methods.control}
-              name="scheme"
-              placeholder="http"
-            />
+            <TypedInput control={control} name="scheme" placeholder="http" />
           </InlineField>
           <InlineField
             label="Follow redirects"
             tooltip="Whether redirects returned by the server should be followed."
             {...commonOptions}
           >
-            <InlineSwitch {...methods.register("follow_redirects")} />
+            <InlineSwitch {...register("follow_redirects")} />
           </InlineField>
           <InlineField label="Enable HTTP2" {...commonOptions}>
-            <InlineSwitch {...methods.register("enable_http2")} />
+            <InlineSwitch {...register("enable_http2")} />
           </InlineField>
           <InlineField label="Proxy URL" {...commonOptions}>
-            <TypedInput control={methods.control} name="proxy_url" />
+            <TypedInput control={control} name="proxy_url" />
           </InlineField>
         </Collapse>
       </FieldSet>

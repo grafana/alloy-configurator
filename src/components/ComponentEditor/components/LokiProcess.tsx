@@ -4,17 +4,20 @@ import {
   Alert,
   Button,
   Card,
-  FieldArray,
   FieldSet,
-  FormAPI,
   IconButton,
   InlineField,
   InlineSwitch,
-  InputControl,
   MultiSelect,
   Select,
 } from "@grafana/ui";
-import { get } from "react-hook-form";
+import {
+  Controller,
+  get,
+  useFieldArray,
+  useFormContext,
+  UseFormReturn,
+} from "react-hook-form";
 import { useStyles } from "../../../theme";
 import GenericStringMap from "../inputs/GenericStringMap";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
@@ -35,7 +38,7 @@ const stages = [
     value: "stage.drop",
     label: "Drop",
     description: "Configures a drop processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -95,7 +98,7 @@ const stages = [
     value: "stage.json",
     label: "JSON",
     description: "Configures a JSON processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <GenericStringMap
@@ -145,11 +148,11 @@ const stages = [
     value: "stage.label_drop",
     label: "Label drop",
     description: "Drop labels from an incoming message",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField label="Labels" tooltip="List of labels to drop">
-            <InputControl
+            <Controller
               render={({ field: { onChange, ref, ...field } }) => (
                 <MultiSelect
                   {...field}
@@ -173,11 +176,11 @@ const stages = [
     label: "Label keep",
     description:
       "Filters the label set of an incoming log entry down to a subset.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField label="Labels" tooltip="Labels to filter log entries">
-            <InputControl
+            <Controller
               render={({ field: { onChange, ref, ...field } }) => (
                 <MultiSelect
                   {...field}
@@ -201,7 +204,7 @@ const stages = [
     label: "Labels",
     description:
       "Configures a labels processing stage that can read data from the extracted values map and set new labels on incoming log entries.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <GenericStringMap
@@ -233,7 +236,7 @@ const stages = [
     value: "stage.limit",
     label: "Limit",
     description: "Configures a limit processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -295,7 +298,7 @@ const stages = [
     value: "stage.logfmt",
     label: "logfmt",
     description: "Configures a logfmt processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <GenericStringMap
@@ -333,7 +336,7 @@ const stages = [
     value: "stage.match",
     label: "Match",
     description: "Configures a match processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -380,7 +383,7 @@ const stages = [
     value: "stage.metrics",
     label: "Metrics",
     description: "Configures a metrics stage.",
-    editor: (_parent: string, _methods: FormAPI<Record<string, any>>) => {
+    editor: (_parent: string, _methods: UseFormReturn) => {
       return (
         <Alert severity="error" title="Unsupported component">
           <p>
@@ -403,7 +406,7 @@ const stages = [
     value: "stage.multiline",
     label: "Multiline",
     description: "Configures a multiline processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -444,7 +447,7 @@ const stages = [
     value: "stage.output",
     label: "Output",
     description: "Configures an output processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -462,14 +465,14 @@ const stages = [
     value: "stage.pack",
     label: "Pack",
     description: "Configures a pack processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
             label="Labels"
             tooltip="The values from the extracted data and labels to pack with the log entry."
           >
-            <InputControl
+            <Controller
               render={({ field: { onChange, ref, ...field } }) => (
                 <MultiSelect
                   {...field}
@@ -504,7 +507,7 @@ const stages = [
     value: "stage.regex",
     label: "RegEx",
     description: "Configures a regex processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -530,7 +533,7 @@ const stages = [
     value: "stage.replace",
     label: "Replace",
     description: "Configures a replace processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -562,7 +565,7 @@ const stages = [
     value: "stage.static_labels",
     label: "Static Labels",
     description: "Configures a static_labels processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <GenericStringMap
@@ -594,7 +597,7 @@ const stages = [
     value: "stage.template",
     label: "Template",
     description: "Configures a template processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -614,7 +617,7 @@ const stages = [
     value: "stage.tenant",
     label: "Tenant",
     description: "Configures a tenant processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField label="Label" tooltip="The label to set as tenant ID.">
@@ -640,7 +643,7 @@ const stages = [
     value: "stage.timestamp",
     label: "Timestamp",
     description: "Configures a timestamp processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -662,7 +665,7 @@ const stages = [
             label="Fallback formats"
             tooltip="Fallback formats to try if the format field fails."
           >
-            <InputControl
+            <Controller
               render={({ field: { onChange, ref, ...field } }) => (
                 <MultiSelect
                   {...field}
@@ -701,7 +704,7 @@ const stages = [
     value: "stage.geoip",
     label: "GeoIP",
     description: "Configures a geoip processing stage.",
-    editor: (parent: string, methods: FormAPI<Record<string, any>>) => {
+    editor: (parent: string, methods: UseFormReturn) => {
       return (
         <>
           <InlineField
@@ -751,7 +754,13 @@ const stages = [
 ];
 const stagesDict = Object.assign({}, ...stages.map((x) => ({ [x.value]: x })));
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
+  const methods = useFormContext();
+  const { control, watch } = methods;
+  const { fields, append, remove, move } = useFieldArray({
+    control,
+    name: "stages",
+  });
   const styles = useStyles(getStyles);
   return (
     <>
@@ -764,75 +773,67 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         <ReferenceMultiSelect
           name="forward_to"
           exportName="LokiReceiver"
-          control={methods.control}
+          control={control}
         />
       </InlineField>
       <FieldSet label="Stages">
-        <FieldArray control={methods.control} name="stages">
-          {({ fields, append, remove, move, swap }) => (
-            <>
-              {fields.map((field, index) => {
-                const stageType = methods.watch(
-                  `stages[${index}].comp-name` as const,
-                );
-                return (
-                  <Card key={field.id} className={styles.card}>
-                    <Card.Heading>
-                      <InputControl
-                        render={({ field: { ref, ...field } }) => (
-                          <Select {...field} options={stages} />
-                        )}
-                        control={methods.control}
-                        name={`stages[${index}].comp-name` as const}
-                      />
-                    </Card.Heading>
-                    <Card.Description>
-                      {stageType && stageType.description}
-                    </Card.Description>
-                    <Card.Actions>
-                      {stageType?.editor &&
-                        stageType.editor(`stages[${index}]` as const, methods)}
-                    </Card.Actions>
-                    <Card.SecondaryActions>
-                      {index !== 0 && (
-                        <IconButton
-                          name="arrow-up"
-                          tooltip="Move this stage up"
-                          onClick={(e) => {
-                            move(index, index - 1);
-                            e.preventDefault();
-                          }}
-                        />
-                      )}
-                      {index < fields.length - 1 && (
-                        <IconButton
-                          name="arrow-down"
-                          tooltip="Move this stage down"
-                          onClick={(e) => {
-                            move(index, index + 1);
-                            e.preventDefault();
-                          }}
-                        />
-                      )}
-                      <IconButton
-                        key="delete"
-                        name="trash-alt"
-                        tooltip="Delete this filter"
-                        onClick={(e) => {
-                          remove(index);
-                          e.preventDefault();
-                        }}
-                      />
-                    </Card.SecondaryActions>
-                  </Card>
-                );
-              })}
-              <Button onClick={() => append({})} icon="plus">
-                Add
-              </Button>
-            </>
-          )}
-        </FieldArray>
+        {fields.map((field, index) => {
+          const stageType = watch(`stages[${index}].comp-name` as const);
+          return (
+            <Card key={field.id} className={styles.card}>
+              <Card.Heading>
+                <Controller
+                  render={({ field: { ref, ...field } }) => (
+                    <Select {...field} options={stages} />
+                  )}
+                  control={control}
+                  name={`stages[${index}].comp-name` as const}
+                />
+              </Card.Heading>
+              <Card.Description>
+                {stageType && stageType.description}
+              </Card.Description>
+              <Card.Actions>
+                {stageType?.editor &&
+                  stageType.editor(`stages[${index}]` as const, methods)}
+              </Card.Actions>
+              <Card.SecondaryActions>
+                {index !== 0 && (
+                  <IconButton
+                    name="arrow-up"
+                    tooltip="Move this stage up"
+                    onClick={(e) => {
+                      move(index, index - 1);
+                      e.preventDefault();
+                    }}
+                  />
+                )}
+                {index < fields.length - 1 && (
+                  <IconButton
+                    name="arrow-down"
+                    tooltip="Move this stage down"
+                    onClick={(e) => {
+                      move(index, index + 1);
+                      e.preventDefault();
+                    }}
+                  />
+                )}
+                <IconButton
+                  key="delete"
+                  name="trash-alt"
+                  tooltip="Delete this filter"
+                  onClick={(e) => {
+                    remove(index);
+                    e.preventDefault();
+                  }}
+                />
+              </Card.SecondaryActions>
+            </Card>
+          );
+        })}
+        <Button onClick={() => append({})} icon="plus">
+          Add
+        </Button>
       </FieldSet>
     </>
   );

@@ -1,6 +1,6 @@
 import { SelectableValue } from "@grafana/data";
-import { Select, InputControl } from "@grafana/ui";
-import { get } from "react-hook-form";
+import { Select } from "@grafana/ui";
+import { Controller, get } from "react-hook-form";
 import { useState } from "react";
 
 import { useComponentContext } from "../../../state";
@@ -26,7 +26,7 @@ const ReferenceSelect = ({
     exportName,
   );
   return (
-    <InputControl
+    <Controller
       render={({ field: { onChange, ref, ...field } }) => (
         <Select
           {...field}

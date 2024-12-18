@@ -1,9 +1,15 @@
-import { FormAPI, InlineField, InlineSwitch } from "@grafana/ui";
+import { InlineField, InlineSwitch } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import ReferenceMultiSelect from "../inputs/ReferenceMultiSelect";
 import TypedInput from "../inputs/TypedInput";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = { labelWidth: 24 };
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <InlineField
@@ -13,7 +19,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
       >
         <TypedInput
           name="eventlog_name"
-          control={methods.control}
+          control={control}
           placeholder="Application"
         />
       </InlineField>
@@ -22,12 +28,12 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="List of receivers to send log entries to."
         {...commonOptions}
         error="You must specify the destination"
-        invalid={!!methods.errors["forward_to"]}
+        invalid={!!errors["forward_to"]}
       >
         <ReferenceMultiSelect
           name="forward_to"
           exportName="LokiReceiver"
-          control={methods.control}
+          control={control}
           rules={{ required: true }}
           width={27}
         />
@@ -37,57 +43,49 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
         tooltip="Event log to read from."
         {...commonOptions}
       >
-        <TypedInput
-          name="xpath_query"
-          control={methods.control}
-          placeholder="*"
-        />
+        <TypedInput name="xpath_query" control={control} placeholder="*" />
       </InlineField>
       <InlineField
         label="Bookmark path"
         tooltip="Keeps position in event log"
         {...commonOptions}
       >
-        <TypedInput name="bookmark_path" control={methods.control} />
+        <TypedInput name="bookmark_path" control={control} />
       </InlineField>
       <InlineField
         label="Poll interval"
         tooltip="How often to poll the event log."
         {...commonOptions}
       >
-        <TypedInput
-          name="poll_interval"
-          control={methods.control}
-          placeholder="3s"
-        />
+        <TypedInput name="poll_interval" control={control} placeholder="3s" />
       </InlineField>
       <InlineField
         label="Locale"
         tooltip="Locale ID for event rendering. 0 default is Windows Locale."
         {...commonOptions}
       >
-        <TypedInput name="locale" control={methods.control} type="number" />
+        <TypedInput name="locale" control={control} type="number" />
       </InlineField>
       <InlineField
         label="Exclude event data"
         tooltip="Exclude event data."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("exclude_event_data")} />
+        <InlineSwitch {...register("exclude_event_data")} />
       </InlineField>
       <InlineField
         label="Exclude user data"
         tooltip="Exclude user data."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("exclude_user_data")} />
+        <InlineSwitch {...register("exclude_user_data")} />
       </InlineField>
       <InlineField
         label="Use incoming timestamp"
         tooltip="When false, assigns the current timestamp to the log when it was processed."
         {...commonOptions}
       >
-        <InlineSwitch {...methods.register("use_incoming_timestamp")} />
+        <InlineSwitch {...register("use_incoming_timestamp")} />
       </InlineField>
     </>
   );

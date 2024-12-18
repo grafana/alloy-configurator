@@ -1,5 +1,4 @@
 import {
-  FormAPI,
   Input,
   Alert,
   LinkButton,
@@ -8,15 +7,21 @@ import {
   InlineField,
   InlineSwitch,
 } from "@grafana/ui";
+import { useFormContext } from "react-hook-form";
 import AuthenticationEditor from "../common/AuthenticationEditor";
 import TlsConfig from "../common/TlsConfig";
 import MultiBlock from "../inputs/MultiBlock";
 import TypedInput from "../inputs/TypedInput";
 
-const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
+const Component = () => {
   const commonOptions = {
     labelWidth: 24,
   };
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <>
       <Alert severity="info" title="Connection Information">
@@ -33,7 +38,6 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
       <MultiBlock
         name="endpoint"
         title="Endpoints"
-        methods={methods}
         newBlock={{
           enable_http2: true,
           follow_redirects: true,
@@ -46,17 +50,16 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 label="Endpoint URL"
                 tooltip="Where to send metrics to"
                 error="An endpoint URL is required"
-                invalid={!!methods.errors["endpoint"]?.url}
+                invalid={!!errors["endpoint"]?.url}
                 {...commonOptions}
               >
                 <TypedInput
                   name={`endpoint[${index}].url` as const}
-                  control={methods.control}
+                  control={control}
                   defaultValue={field["url"]}
                 />
               </InlineField>
               <AuthenticationEditor.Component
-                methods={methods}
                 parent={`endpoint[${index}]` as const}
                 defaultValue={field.auth_type}
               />
@@ -68,7 +71,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 >
                   <TypedInput
                     name={`endpoint[${index}].tenant_id` as const}
-                    control={methods.control}
+                    control={control}
                     defaultValue={field["tenant_id"]}
                   />
                 </InlineField>
@@ -80,7 +83,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].batch_wait` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["batch_wait"]}
                     />
                   </InlineField>
@@ -91,7 +94,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].batch_size` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["batch_size"]}
                     />
                   </InlineField>
@@ -102,7 +105,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].min_backoff_period` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field?.min_backoff_period}
                     />
                   </InlineField>
@@ -113,7 +116,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].max_backoff_period` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field?.max_backoff_period}
                     />
                   </InlineField>
@@ -123,9 +126,9 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <Input
-                      {...methods.register(
+                      {...register(
                         `endpoint[${index}].max_backoff_retries` as const,
-                        { valueAsNumber: true }
+                        { valueAsNumber: true },
                       )}
                       defaultValue={field?.max_backoff_retries}
                     />
@@ -133,7 +136,6 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                 </ControlledCollapse>
                 <ControlledCollapse label="TLS Configuration">
                   <TlsConfig
-                    methods={methods}
                     parent={`endpoint[${index}].tls_config` as const}
                     defaultValues={field?.tls_config}
                   />
@@ -146,7 +148,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].proxy_url` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["proxy_url"]}
                     />
                   </InlineField>
@@ -157,7 +159,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                   >
                     <TypedInput
                       name={`endpoint[${index}].remote_timeout` as const}
-                      control={methods.control}
+                      control={control}
                       defaultValue={field["remote_timeout"]}
                     />
                   </InlineField>
@@ -167,8 +169,8 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].follow_redirects` as const
+                      {...register(
+                        `endpoint[${index}].follow_redirects` as const,
                       )}
                       defaultChecked={field["follow_redirects"]}
                     />
@@ -179,9 +181,7 @@ const Component = ({ methods }: { methods: FormAPI<Record<string, any>> }) => {
                     {...commonOptions}
                   >
                     <InlineSwitch
-                      {...methods.register(
-                        `endpoint[${index}].enable_http2` as const
-                      )}
+                      {...register(`endpoint[${index}].enable_http2` as const)}
                       defaultChecked={field["enable_http2"]}
                     />
                   </InlineField>
