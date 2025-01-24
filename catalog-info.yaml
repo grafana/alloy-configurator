@@ -7,7 +7,7 @@ metadata:
     easy to use web interface for creating and editing alloy configuration files
   links:
     - title: Slack Channel
-      url: #growth-and-onboarding-team
+      url: https://raintank-corp.slack.com/archives/C034H8U2L81
   annotations:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: grafana/alloy-configurator
