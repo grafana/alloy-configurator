@@ -12,6 +12,6 @@ metadata:
     backstage.io/techdocs-ref: dir:.
     github.com/project-slug: grafana/alloy-configurator
 spec:
-  type: service
+  type: website
   owner: group:default/devex
   lifecycle: production
