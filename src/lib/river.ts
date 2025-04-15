@@ -217,13 +217,13 @@ export function toArgument(
           : new Attribute(k, v);
       }
       if (v["-reference"] || v["-function"]) {
+        if (
+          Object.keys(spec?.default as object).length === 0 &&
+          Object.keys(v).length === 0
+        ) {
+          return null;
+        }
         return new Attribute(k, v);
-      }
-      if (
-        Object.keys(spec?.default as object).length === 0 &&
-        Object.keys(v).length === 0
-      ) {
-        return null;
       }
       if (spec?.type === "attribute") {
         return new Attribute(k, v);
