@@ -764,19 +764,6 @@ export const KnownModules: Record<
 > = {
   "https://github.com/grafana/alloy-modules.git": {
     "modules/cloud/grafana/cloud/module.alloy": {
-      importMarkers(node, block) {
-        return [
-          {
-            message:
-              "Currently, the Pyroscope functionality in this module is under the public-preview stability level. As such, to use this module, you will need to pass `--stability.level=public-preview` to your `alloy run` command.",
-            severity: monaco.MarkerSeverity.Warning,
-            startLineNumber: node.startPosition.row + 1,
-            startColumn: node.startPosition.column + 1,
-            endLineNumber: node.endPosition.row + 1,
-            endColumn: node.endPosition.column + 1,
-          },
-        ];
-      },
       exports: {
         stack: new ComponentType({
           exports: {
