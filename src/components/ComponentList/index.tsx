@@ -116,6 +116,15 @@ const components: ListEntry[] = [
     component: new Block("discovery.ec2", "ec2_instances", []),
   },
   {
+    name: "discovery.docker",
+    title: "Docker Discovery",
+    meta: ["Docker", "Discovery"],
+    icon: "https://storage.googleapis.com/grafanalabs-integration-logos/docker.png",
+    component: new Block("discovery.docker", "default", [
+      new Attribute("host", "unix:///var/run/docker.sock"),
+    ]),
+  },
+  {
     name: "otelcol.receiver.otlp",
     title: "OpenTelemetry Collector OTLP Receiver",
     meta: ["OTEL", "Receiver", "Metrics", "Logs", "Traces"],

@@ -32,6 +32,7 @@ import LokiProcess from "./components/LokiProcess";
 import { useComponentContext } from "../../state";
 import ImportGit from "./components/ImportGit";
 import { FormProvider, useForm } from "react-hook-form";
+import DiscoveryDocker from "./components/DiscoveryDocker";
 
 interface ComponentEditorProps {
   updateComponent: (component: Block) => void;
@@ -66,6 +67,8 @@ const ComponentEditor = ({
           postTransform: id,
           preTransform: id,
         };
+      case "discovery.docker":
+        return DiscoveryDocker;
       case "prometheus.remote_write":
         return PrometheusRemoteWrite;
       case "prometheus.exporter.redis":

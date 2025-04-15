@@ -673,6 +673,20 @@ export const KnownComponents: Record<string, ComponentType> = {
       rules: "RelabelRules",
     },
   }),
+  "discovery.docker": new ComponentType({
+    multi: true,
+    args: {
+      host: new LiteralArgument("string", ""),
+      enable_http2: new LiteralArgument("boolean", true),
+      tls_config: TLSConfig,
+      bearer_token: new LiteralArgument("string", ""),
+      bearer_token_file: new LiteralArgument("string", ""),
+      basic_auth: BasicAuthBlock,
+    },
+    exports: {
+      targets: "list(map(string))",
+    },
+  }),
   "pyroscope.scrape": new ComponentType({
     multi: true,
     args: {
