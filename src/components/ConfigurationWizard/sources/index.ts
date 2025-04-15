@@ -1,4 +1,5 @@
 import { Source } from "../types/source";
+import Docker from "./Docker";
 import GitHub from "./GitHub";
 import LinuxNode from "./LinuxNode";
 import OTLPReceiver from "./OTLPReceiver";
@@ -12,5 +13,6 @@ const Sources: Source[] = [
   StaticProfiling,
   GitHub,
   WindowsNode,
+  Docker,
 ];
 export default Sources;
