@@ -1,6 +1,18 @@
 import Parser from "web-tree-sitter";
 import { BlockType, ArgumentType } from "./components";
 
+export function valuesToMap(
+  v: Array<{ key: string; value: string }>,
+): Record<string, string> {
+  return v.reduce((acc, a) => ({ ...acc, [a.key]: a.value }), {});
+}
+
+export function mapToValues(
+  v: Record<string, string>,
+): Array<{ key: string; value: string }> {
+  return Object.entries(v).map(([k, v]) => ({ key: k, value: v }));
+}
+
 export function encodeValue(v: any): string {
   switch (typeof v) {
     case "string":
@@ -206,6 +218,12 @@ export function toArgument(
       }
       if (v["-reference"] || v["-function"]) {
         return new Attribute(k, v);
+      }
+      if (
+        Object.keys(spec?.default as object).length === 0 &&
+        Object.keys(v).length === 0
+      ) {
+        return null;
       }
       if (spec?.type === "attribute") {
         return new Attribute(k, v);

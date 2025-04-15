@@ -33,6 +33,7 @@ import { useComponentContext } from "../../state";
 import ImportGit from "./components/ImportGit";
 import { FormProvider, useForm } from "react-hook-form";
 import DiscoveryDocker from "./components/DiscoveryDocker";
+import LokiSourceDocker from "./components/LokiSourceDocker";
 
 interface ComponentEditorProps {
   updateComponent: (component: Block) => void;
@@ -117,6 +118,8 @@ const ComponentEditor = ({
         return LokiRelabel;
       case "loki.process":
         return LokiProcess;
+      case "loki.source.docker":
+        return LokiSourceDocker;
       case "prometheus.relabel":
         return PrometheusRelabel;
       case "discovery.kubernetes":

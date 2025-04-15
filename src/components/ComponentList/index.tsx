@@ -167,6 +167,15 @@ const components: ListEntry[] = [
     component: new Block("loki.process", "default", []),
   },
   {
+    name: "loki.source.docker",
+    title: "Loki docker source",
+    meta: ["Logs", "Docker", "Discovery"],
+    icon: "https://storage.googleapis.com/grafanalabs-integration-logos/docker.png",
+    component: new Block("loki.source.docker", "default", [
+      new Attribute("host", "unix:///var/run/docker.sock"),
+    ]),
+  },
+  {
     name: "local.file_match",
     title: "File discovery",
     meta: ["Discovery", "Logs"],

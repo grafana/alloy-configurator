@@ -1,15 +1,6 @@
-import {
-  Button,
-  Collapse,
-  FieldSet,
-  InlineField,
-  InlineFieldRow,
-  InlineSwitch,
-  Input,
-  MultiSelect,
-} from "@grafana/ui";
+import { Collapse, FieldSet, InlineField, InlineSwitch } from "@grafana/ui";
 import { useState } from "react";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import AuthenticationEditor from "../common/AuthenticationEditor";
 import TlsBlock from "../common/TlsBlock";
 import TypedInput from "../inputs/TypedInput";

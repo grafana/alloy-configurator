@@ -1,6 +1,6 @@
 import { InlineField } from "@grafana/ui";
 import { useFormContext } from "react-hook-form";
-import { Argument, Attribute, Block } from "../../../lib/river";
+import { Argument, Attribute, Block, valuesToMap } from "../../../lib/river";
 import LabelsInput from "../../ComponentEditor/inputs/LabelsInput";
 import TypedInput from "../../ComponentEditor/inputs/TypedInput";
 import { Destination } from "../types/destination";
@@ -40,14 +40,7 @@ const Docker = {
       }),
     );
     if (advanced?.docker?.labels) {
-      args.push(
-        new Attribute(
-          "labels",
-          (
-            advanced.docker.labels as Array<{ key: string; value: string }>
-          ).reduce((acc, a) => ({ ...acc, [a.key]: a.value }), {}),
-        ),
-      );
+      args.push(new Attribute("labels", valuesToMap(advanced.docker.labels)));
     }
     args.push(new Attribute("forward_to", [{ "-reference": d.logs.receiver }]));
     return (

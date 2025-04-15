@@ -687,6 +687,23 @@ export const KnownComponents: Record<string, ComponentType> = {
       targets: "list(map(string))",
     },
   }),
+  "loki.source.docker": new ComponentType({
+    multi: true,
+    args: {
+      host: new LiteralArgument("string", ""),
+      forward_to: new LiteralArgument("list(LokiReceiver)", []),
+      labels: new LiteralArgument("map(string)", []),
+      client: new BlockType({
+        args: {
+          enable_http2: new LiteralArgument("boolean", true),
+          tls_config: TLSConfig,
+          bearer_token: new LiteralArgument("string", ""),
+          bearer_token_file: new LiteralArgument("string", ""),
+          basic_auth: BasicAuthBlock,
+        },
+      }),
+    },
+  }),
   "pyroscope.scrape": new ComponentType({
     multi: true,
     args: {
