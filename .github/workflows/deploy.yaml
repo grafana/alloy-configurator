@@ -6,7 +6,6 @@ on:
 
   workflow_dispatch:
 env:
-  REACT_APP_FARO_URL: ${{ secrets.REACT_APP_FARO_URL }}
   REACT_APP_CONVERT_ENDPOINT: 'https://alloy-configurator-wcwoo.ondigitalocean.app/convert'
 
 permissions:
@@ -49,12 +48,12 @@ jobs:
         working-directory: backend/alloy/convert-web
         run: |
           export KO_DOCKER_REPO=ghcr.io/grafana/alloy-configurator-backend
-          ko build --sbom=none --bare --platform linux/arm64,linux/arm/v7,linux/amd64 -t "$GITHUB_REF" \
+          ko build --sbom=none --bare --platform linux/arm64,linux/arm/v7,linux/amd64 -t "$GITHUB_REF_NAME" \
           --image-label org.opencontainers.image.title=alloy-configurator-backend \
           --image-label org.opencontainers.image.description="Backend for the alloy-configurator" \
           --image-label org.opencontainers.image.url=${{ github.server_url }}/${{ github.repository }} \
           --image-label org.opencontainers.image.revision=${{ github.sha }} \
-          --image-label "org.opencontainers.image.version=$GITHUB_REF" \
+          --image-label "org.opencontainers.image.version=$GITHUB_REF_NAME" \
           --image-label org.opencontainers.image.created=${{ env.BUILD_DATE }}
   deploy-frontend:
     permissions:
@@ -74,6 +73,11 @@ jobs:
         with:
           node-version: 18
       - run: npm ci --force # needed for react-hook-form to play nicely with newer react versions
+      - id: get-secrets
+        uses: grafana/shared-workflows/actions/get-vault-secrets@get-vault-secrets-v1.2.0
+        with:
+          repo_secrets: |
+            REACT_APP_FARO_URL=faro:collector-url
       - run: npm run-script build
         # Deployment
       - name: Setup Pages
