@@ -129,8 +129,7 @@
       "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\](?!@grafana/ui|d3-interpolate|d3-color|ol).+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
+      "node_modules/(?!.*(marked|@grafana/ui|d3-interpolate|d3-color|react-calendar|get-user-locale|memoize|mimic-function|@wojtekmaj/date-utils|rc-picker|rc-drawer|ol|uplot|web-vitals|rc-slider)/.*)"
     ],
     "modulePaths": [],
     "moduleNameMapper": {
