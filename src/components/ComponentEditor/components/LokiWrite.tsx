@@ -50,7 +50,7 @@ const Component = () => {
                 label="Endpoint URL"
                 tooltip="Where to send metrics to"
                 error="An endpoint URL is required"
-                invalid={!!errors["endpoint"]?.url}
+                invalid={!!errors.url}
                 {...commonOptions}
               >
                 <TypedInput

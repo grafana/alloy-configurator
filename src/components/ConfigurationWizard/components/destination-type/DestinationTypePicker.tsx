@@ -1,4 +1,4 @@
-import { Stack } from "@grafana/experimental";
+import { Stack } from "@grafana/ui";
 import { DestinationFormType } from "../../types/destination";
 import { DestinationType } from "./DestinationType";
 interface DestinationTypePickerProps {

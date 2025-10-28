@@ -47,7 +47,7 @@ const TypedInput = ({
   type?: "text" | "number";
   width?: number;
 }) => {
-  defaultValue = defaultValue ?? get(control.defaultValuesRef.current, name);
+  defaultValue = defaultValue ?? get(control._defaultValues, name);
   const [inputType, setInputType] = React.useState<Type>("literal");
   const [inputValue, setInputValue] = React.useState<string>(() => {
     if (!defaultValue) return "";

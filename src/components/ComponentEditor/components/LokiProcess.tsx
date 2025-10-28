@@ -119,7 +119,7 @@ const stages = [
             <InlineSwitch
               {...methods.register(`${parent}.drop_malformed` as const)}
               defaultChecked={get(
-                methods.control.defaultValuesRef.current,
+                methods.control._defaultValues,
                 `${parent}.drop_malformed` as const,
               )}
             />
@@ -275,7 +275,7 @@ const stages = [
             <InlineSwitch
               {...methods.register(`${parent}.drop` as const)}
               defaultChecked={get(
-                methods.control.defaultValuesRef.current,
+                methods.control._defaultValues,
                 `${parent}.drop` as const,
               )}
             />
@@ -494,7 +494,7 @@ const stages = [
             <InlineSwitch
               {...methods.register(`${parent}.ingest_timestamp` as const)}
               defaultChecked={get(
-                methods.control.defaultValuesRef.current,
+                methods.control._defaultValues,
                 `${parent}.ingest_timestamp` as const,
               )}
             />

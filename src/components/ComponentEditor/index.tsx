@@ -159,19 +159,14 @@ const ComponentEditor = ({
     handleSubmit,
     formState: { errors },
   } = methods;
-  const onSubmit = ({
-    label,
-    ...args
-  }: {
-    [key: string]: any;
-    label: string;
-  }) => {
+  const onSubmit = (args: Record<string, any>) => {
     const transformed = postTransform(args);
+    console.log(args);
     updateComponent(
       toBlock(
         component.name,
         transformed,
-        label,
+        args.label as string,
         KnownComponents[component.name],
       )!,
     );

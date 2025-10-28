@@ -15,7 +15,7 @@ const ReferenceSelect = ({
   rules,
 }: ReferenceSelectProps<{ "-reference": string }>) => {
   const { components, imports } = useComponentContext();
-  defaultValue = defaultValue ?? get(control.defaultValuesRef.current, name);
+  defaultValue = defaultValue ?? get(control._defaultValues, name);
   const [value, setValue] = useState<SelectableValue<object>>(() => {
     if (!defaultValue) return null;
     return { label: defaultValue["-reference"], value: defaultValue };

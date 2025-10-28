@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "rc-drawer/assets/index.css";
 import "font-awesome/css/font-awesome.min.css";
 import App from "./App";
 import { ThemeProvider } from "./theme";

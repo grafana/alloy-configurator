@@ -235,7 +235,7 @@ const getStyles = (theme: GrafanaTheme2) => {
       height: 5rem;
     `,
     wizardModal: css`
-      min-width: 50%;
+      min-width: 60%;
     `,
     buttonBar: css`
       display: flex;

@@ -218,6 +218,7 @@ export function toArgument(
       }
       if (v["-reference"] || v["-function"]) {
         if (
+          spec?.default &&
           Object.keys(spec?.default as object).length === 0 &&
           Object.keys(v).length === 0
         ) {

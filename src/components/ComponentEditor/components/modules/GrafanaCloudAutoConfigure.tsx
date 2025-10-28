@@ -17,7 +17,7 @@ const Component = () => {
           label="Stack name"
           tooltip="Name of your stack as shown in the Grafana Cloud Console"
           error="The stack name is required"
-          invalid={!!errors["arguments"]?.stack_name}
+          invalid={!!errors.stack_name}
           {...commonOptions}
         >
           <TypedInput
@@ -30,7 +30,7 @@ const Component = () => {
           label="Token"
           tooltip="Access policy token or API Key"
           error="The token is required"
-          invalid={!!errors["arguments"]?.token}
+          invalid={!!errors.token}
           {...commonOptions}
         >
           <TypedInput

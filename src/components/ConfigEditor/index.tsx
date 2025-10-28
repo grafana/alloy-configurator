@@ -364,6 +364,7 @@ const ConfigEditor = () => {
               <HorizontalGroup>
                 {currentComponent?.node == null && (
                   <Button
+                    aria-label="back"
                     icon="arrow-left"
                     fill="text"
                     variant="secondary"
