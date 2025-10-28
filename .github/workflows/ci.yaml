@@ -22,6 +22,7 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 18
-    - run: npm ci --force # needed for react-hook-form to play nicely with newer react versions
-    - run: npm test
-    - run: npm run lint
+    - uses: pnpm/action-setup@v4
+    - run: pnpm ci
+    - run: pnpm test
+    - run: pnpm run lint
