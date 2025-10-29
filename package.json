@@ -161,7 +161,7 @@
     ]
   },
   "devDependencies": {
-    "typescript-eslint-language-service": "^5.0.5"
+    "typescript-eslint-language-service": "5.0.5"
   },
   "packageManager": "pnpm@10.19.1-oidc-test.3+sha512.e5961a4b56bb37620f97b65da4ca56216634bf39ed358eda925f0f036534d458fa249d93ed0021410523f8bb7ed8512b61fe5532ed3e81777793366c6be026b5"
 }

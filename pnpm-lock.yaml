@@ -238,7 +238,7 @@ importers:
         version: 6.6.1(@types/babel__core@7.20.5)(webpack@5.102.1)
     devDependencies:
       typescript-eslint-language-service:
-        specifier: ^5.0.5
+        specifier: 5.0.5
         version: 5.0.5(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.9.2))(eslint@8.57.1)(typescript@5.9.2)
 
 packages:
