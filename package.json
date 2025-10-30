@@ -11,7 +11,7 @@
     "@grafana/faro-web-tracing": "^1.1.2",
     "@grafana/ui": "^12.2.1",
     "@monaco-editor/react": "^4.5.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
     "@svgr/webpack": "^8.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
