@@ -26,7 +26,7 @@ jobs:
         with:
           submodules: recursive
           persist-credentials: false
-      - uses: actions/setup-go@19bb51245e9c80abacb2e91cc42b33fa478b8639 # v4
+      - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6
         with:
           go-version-file: "backend/alloy/go.mod"
           cache: true
