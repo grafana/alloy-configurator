@@ -63,7 +63,6 @@ const getStyles = (theme: GrafanaTheme2) => {
       border: 1px solid ${theme.colors.border.weak};
       border-radius: 2px;
       color: ${theme.colors.text.primary};
-      z-index: 1060;
       background-color: ${theme.colors.background.primary};
     `,
     headerText: css`
