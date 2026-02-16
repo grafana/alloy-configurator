@@ -219,8 +219,8 @@ importers:
         specifier: ^5
         version: 5.9.3
       web-tree-sitter:
-        specifier: ^0.20.8
-        version: 0.20.8
+        specifier: ^0.26.0
+        version: 0.26.3
       web-vitals:
         specifier: ^2.1.4
         version: 2.1.4
@@ -7026,8 +7026,8 @@ packages:
   wbuf@1.7.3:
     resolution: {integrity: sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA==}
 
-  web-tree-sitter@0.20.8:
-    resolution: {integrity: sha512-weOVgZ3aAARgdnb220GqYuh7+rZU0Ka9k9yfKtGAzEYMa6GgiCzW9JjQRJyCJakvibQW+dfjJdihjInKuuCAUQ==}
+  web-tree-sitter@0.26.3:
+    resolution: {integrity: sha512-JIVgIKFS1w6lejxSntCtsS/QsE/ecTS00en809cMxMPxaor6MvUnQ+ovG8uTTTvQCFosSh4MeDdI5bSGw5SoBw==}
 
   web-vitals@2.1.4:
     resolution: {integrity: sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg==}
@@ -15466,7 +15466,7 @@ snapshots:
     dependencies:
       minimalistic-assert: 1.0.1
 
-  web-tree-sitter@0.20.8: {}
+  web-tree-sitter@0.26.3: {}
 
   web-vitals@2.1.4: {}
 
