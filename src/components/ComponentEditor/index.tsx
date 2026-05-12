@@ -161,7 +161,6 @@ const ComponentEditor = ({
   } = methods;
   const onSubmit = (args: Record<string, any>) => {
     const transformed = postTransform(args);
-    console.log(args);
     updateComponent(
       toBlock(
         component.name,
