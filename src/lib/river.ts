@@ -268,6 +268,9 @@ export function toBlock(
       if (arg == null) {
         return [];
       }
+      if (label && arg.name === "label") {
+        return [];
+      }
       return [arg];
     }
   });
