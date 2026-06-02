@@ -6022,7 +6022,7 @@ packages:
       react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
   react-data-grid@https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58:
-    resolution: {tarball: https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58}
     version: 7.0.0-beta.56
     peerDependencies:
       react: ^18.0 || ^19.0
