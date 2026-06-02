@@ -108,8 +108,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       dotenv:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^17.0.0
+        version: 17.4.2
       dotenv-expand:
         specifier: ^5.1.0
         version: 5.1.0
@@ -3475,9 +3475,9 @@ packages:
   dotenv-expand@5.1.0:
     resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
 
-  dotenv@10.0.0:
-    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
-    engines: {node: '>=10'}
+  dotenv@17.4.2:
+    resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
+    engines: {node: '>=12'}
 
   downshift@9.0.10:
     resolution: {integrity: sha512-TP/iqV6bBok6eGD5tZ8boM8Xt7/+DZvnVNr8cNIhbAm2oUBd79Tudiccs2hbcV9p7xAgS/ozE7Hxy3a9QqS6Mw==}
@@ -11569,7 +11569,7 @@ snapshots:
 
   dotenv-expand@5.1.0: {}
 
-  dotenv@10.0.0: {}
+  dotenv@17.4.2: {}
 
   downshift@9.0.10(react@18.3.1):
     dependencies:
