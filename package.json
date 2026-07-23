@@ -51,7 +51,7 @@
     "jest-watch-typeahead": "^1.0.0",
     "memoize-one": "^6.0.0",
     "mini-css-extract-plugin": "^2.4.5",
-    "monaco-editor": "^0.54.0",
+    "monaco-editor": "^0.56.0",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^6.2.1",
