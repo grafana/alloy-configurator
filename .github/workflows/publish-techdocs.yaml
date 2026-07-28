@@ -15,7 +15,7 @@ permissions:
   contents: read
 jobs:
   publish-docs:
-    uses: grafana/shared-workflows/.github/workflows/publish-techdocs.yaml@46f48da11e78ebdba7a8747ae456b11062fac83e # main
+    uses: grafana/shared-workflows/.github/workflows/publish-techdocs.yaml@8eef102d2f5f93bc3d2b26937e7bec29115d81e8 # main
     with:
       namespace: default
       kind: component
