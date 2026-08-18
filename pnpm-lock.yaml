@@ -111,8 +111,8 @@ importers:
         specifier: ^17.0.0
         version: 17.4.2
       dotenv-expand:
-        specifier: ^13.0.0
-        version: 13.0.0
+        specifier: ^5.1.0
+        version: 5.1.0
       eslint:
         specifier: ^8.3.0
         version: 8.57.1
@@ -3472,9 +3472,8 @@ packages:
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
 
-  dotenv-expand@13.0.0:
-    resolution: {integrity: sha512-aBfBS8eYIeXmpHI9ThIlA7/WLq+SLt18iXUZhb52rW89QLKQFoIpPG1bPeewoPZsTyjSSO3T7234FBVUM1V2rA==}
-    engines: {node: '>=12'}
+  dotenv-expand@5.1.0:
+    resolution: {integrity: sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==}
 
   dotenv@17.4.2:
     resolution: {integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==}
@@ -6017,7 +6016,7 @@ packages:
       react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
   react-data-grid@https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58:
-    resolution: {gitHosted: true, integrity: sha512-IJIgappTeRXSF/rAK+A/xjh+tWHI3qDLS6sLWrz18cIhaIhJooIbwguXytF9/OQaytoLWFOZEvXw8N5yJSZU+g==, tarball: https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/grafana/react-data-grid/tar.gz/a922856b5ede21d55db3fdffb6d38dc76bdc7c58}
     version: 7.0.0-beta.56
     peerDependencies:
       react: ^18.0 || ^19.0
@@ -11568,9 +11567,7 @@ snapshots:
       no-case: 3.0.4
       tslib: 2.8.1
 
-  dotenv-expand@13.0.0:
-    dependencies:
-      dotenv: 17.4.2
+  dotenv-expand@5.1.0: {}
 
   dotenv@17.4.2: {}
 
