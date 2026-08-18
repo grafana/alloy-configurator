@@ -1,5 +1,9 @@
 # Alloy Configurator Tool
 
+> [!WARNING]
+> This tool is no longer maintained. The functionality has been merged into [Grafana Cloud Fleet Management](https://grafana.com/docs/grafana-cloud/observe-and-act/send-data/fleet-management/introduction/) where it has also received a bunch of improvements.
+> You can still use this - just don't expect components to be up-to-date or a bug free experience.
+
 The _Alloy Configuration Generator_ is an easy to use web interface for creating and editing alloy configuration files. It targets the flow configuration format.
 
 Try it out here: [grafana.github.io/alloy-configurator/](https://grafana.github.io/alloy-configurator/)
